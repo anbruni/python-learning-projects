@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>dictionaries.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>Python Dictionaries - Guida Completa</h1>
+<h2>🎯 Cos&#39;è un Dictionary?</h2>
+<p><strong>Definizione:</strong> Una collezione <strong>non ordinata</strong> (ordinata da Python 3.7+) di coppie <strong>chiave-valore</strong> (key-value pairs).</p>
+<pre><code class="language-python"># Dictionary semplice
+person = {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 25,
+    &quot;city&quot;: &quot;NYC&quot;
+}
+
+print(person[&quot;name&quot;])  # &quot;Alice&quot;
+</code></pre>
+<p><strong>Caratteristiche chiave:</strong></p>
+<ul>
+<li>✅ <strong>Key-Value pairs</strong>: ogni elemento è una coppia chiave-valore</li>
+<li>✅ <strong>Ordered</strong> (da Python 3.7+): mantiene ordine di inserimento</li>
+<li>✅ <strong>Mutable</strong>: può essere modificato</li>
+<li>✅ <strong>Keys uniche</strong>: ogni chiave può apparire una sola volta</li>
+<li>✅ <strong>Fast lookup</strong>: accesso O(1) per chiave</li>
+<li>✅ <strong>Keys immutable</strong>: chiavi devono essere hashable (str, int, tuple)</li>
+</ul>
+<hr>
+<h2>📊 Dict vs List vs Tuple vs Set</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Dict</th>
+<th>List</th>
+<th>Tuple</th>
+<th>Set</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structure</strong></td>
+<td>Key-Value</td>
+<td>Indexed</td>
+<td>Indexed</td>
+<td>Unique items</td>
+</tr>
+<tr>
+<td><strong>Ordered</strong></td>
+<td>✅ (3.7+)</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Mutable</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Duplicates</strong></td>
+<td>Keys NO, Values YES</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td><code>dict[key]</code></td>
+<td><code>list[index]</code></td>
+<td><code>tuple[index]</code></td>
+<td>No access</td>
+</tr>
+<tr>
+<td><strong>Lookup</strong></td>
+<td>O(1) by key</td>
+<td>O(n) by value</td>
+<td>O(n) by value</td>
+<td>O(1) by value</td>
+</tr>
+<tr>
+<td><strong>Use case</strong></td>
+<td>Key-value mapping</td>
+<td>Ordered collection</td>
+<td>Fixed data</td>
+<td>Unique values</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🚀 Creare Dictionaries</h2>
+<h3>Metodo 1: Literal Syntax (più comune)</h3>
+<pre><code class="language-python"># Dict con vari tipi
+person = {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 25,
+    &quot;is_active&quot;: True,
+    &quot;hobbies&quot;: [&quot;reading&quot;, &quot;coding&quot;]
+}
+
+# Dict vuoto
+empty = {}
+
+# Con chiavi di tipi diversi
+mixed = {
+    &quot;string_key&quot;: 1,
+    42: &quot;numeric key&quot;,
+    (1, 2): &quot;tuple key&quot;  # Tuple OK (immutable)
+}
+</code></pre>
+<h3>Metodo 2: Constructor dict()</h3>
+<pre><code class="language-python"># Con keyword arguments
+person = dict(name=&quot;Alice&quot;, age=25, city=&quot;NYC&quot;)
+# {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+
+# Da lista di tuple
+pairs = [(&quot;name&quot;, &quot;Alice&quot;), (&quot;age&quot;, 25)]
+person = dict(pairs)
+# {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# Da due liste con zip()
+keys = [&quot;name&quot;, &quot;age&quot;, &quot;city&quot;]
+values = [&quot;Alice&quot;, 25, &quot;NYC&quot;]
+person = dict(zip(keys, values))
+# {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+</code></pre>
+<h3>Metodo 3: Dict Comprehension</h3>
+<p><strong>Sintassi generale:</strong></p>
+<pre><code class="language-python">{key_expression: value_expression for item in iterable}
+{key_expression: value_expression for item in iterable if condition}
+{key_expression: value_expression for key, value in dict.items()}
+{key_expression: value_expression for key, value in dict.items() if condition}
+</code></pre>
+<p><strong>Template da ricordare:</strong></p>
+<pre><code class="language-python"># Template base
+{key: value for key, value in dict.items()}
+
+# Con filtro
+{key: value for key, value in dict.items() if condition}
+
+# Trasformazione
+{key: transform(value) for key, value in dict.items()}
+
+# Filtro + trasformazione
+{key: transform(value) for key, value in dict.items() if condition}
+</code></pre>
+<p><strong>Esempi pratici:</strong></p>
+<pre><code class="language-python"># 1. Squares (da range)
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# 2. Con condizione (filtrare)
+evens = {x: x**2 for x in range(10) if x % 2 == 0}
+# {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+# 3. Da lista (word → length)
+words = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]
+lengths = {word: len(word) for word in words}
+# {&quot;apple&quot;: 5, &quot;banana&quot;: 6, &quot;cherry&quot;: 6}
+
+# 4. Filtrare dict esistente per VALUE
+data = {&quot;a&quot;: 10, &quot;b&quot;: 5, &quot;c&quot;: 20}
+filtered = {k: v for k, v in data.items() if v &gt;= 10}
+# {&quot;a&quot;: 10, &quot;c&quot;: 20}
+
+# 5. Filtrare dict esistente per KEY
+data = {&quot;apple&quot;: 1, &quot;banana&quot;: 2, &quot;cherry&quot;: 3}
+filtered = {k: v for k, v in data.items() if k.startswith(&quot;a&quot;)}
+# {&quot;apple&quot;: 1}
+
+# 6. Trasformare VALUES
+data = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+doubled = {k: v * 2 for k, v in data.items()}
+# {&quot;a&quot;: 2, &quot;b&quot;: 4, &quot;c&quot;: 6}
+
+# 7. Trasformare KEYS
+data = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+upper_keys = {k.upper(): v for k, v in data.items()}
+# {&quot;A&quot;: 1, &quot;B&quot;: 2, &quot;C&quot;: 3}
+
+# 8. Invertire dict (swap key-value)
+original = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+inverted = {value: key for key, value in original.items()}
+# {1: &quot;a&quot;, 2: &quot;b&quot;, 3: &quot;c&quot;}
+
+# 9. Nested: filtrare + trasformare
+data = {&quot;a&quot;: 1, &quot;b&quot;: 5, &quot;c&quot;: 10, &quot;d&quot;: 3}
+result = {k: v * 10 for k, v in data.items() if v &gt; 2}
+# {&quot;b&quot;: 50, &quot;c&quot;: 100, &quot;d&quot;: 30}
+</code></pre>
+<p><strong>Confronto con List Comprehension:</strong></p>
+<pre><code class="language-python"># List comprehension (genera lista)
+[x**2 for x in range(5)]
+# [0, 1, 4, 9, 16]
+
+# Dict comprehension (genera dict)
+{x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Set comprehension (genera set)
+{x**2 for x in range(5)}
+# {0, 1, 4, 9, 16}
+</code></pre>
+<p><strong>⚠️ Common mistake:</strong></p>
+<pre><code class="language-python">data = {&quot;a&quot;: 10, &quot;b&quot;: 5, &quot;c&quot;: 20}
+
+# ❌ SBAGLIATO - Set comprehension, non dict!
+result = {data for v in data.values() if v &gt;= 10}
+
+# ✅ CORRETTO - Dict comprehension
+result = {k: v for k, v in data.items() if v &gt;= 10}
+</code></pre>
+<h3>Metodo 4: fromkeys()</h3>
+<pre><code class="language-python"># Tutte le chiavi con stesso valore
+keys = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+default_dict = dict.fromkeys(keys, 0)
+# {&quot;a&quot;: 0, &quot;b&quot;: 0, &quot;c&quot;: 0}
+
+# Senza valore (default None)
+none_dict = dict.fromkeys(keys)
+# {&quot;a&quot;: None, &quot;b&quot;: None, &quot;c&quot;: None}
+</code></pre>
+<hr>
+<h2>🔍 Accedere a Valori</h2>
+<h3><code>[]</code> Operator (KeyError se manca)</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# Accesso normale
+print(person[&quot;name&quot;])  # &quot;Alice&quot;
+
+# KeyError se chiave non esiste
+try:
+    print(person[&quot;job&quot;])  # ❌ KeyError: &#39;job&#39;
+except KeyError:
+    print(&quot;Key not found!&quot;)
+</code></pre>
+<h3><code>.get()</code> Method (sicuro, ritorna None)</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# Get con None come default
+print(person.get(&quot;name&quot;))  # &quot;Alice&quot;
+print(person.get(&quot;job&quot;))   # None (no error!)
+
+# Get con default personalizzato
+print(person.get(&quot;job&quot;, &quot;Unknown&quot;))  # &quot;Unknown&quot;
+print(person.get(&quot;age&quot;, 0))          # 25 (esiste già)
+</code></pre>
+<h3>Quando usare cosa?</h3>
+<pre><code class="language-python"># ✅ Usa [] quando:
+# - Sei SICURO che la chiave esiste
+# - VUOI un errore se manca (fail fast)
+print(config[&quot;database_url&quot;])  # Must exist!
+
+# ✅ Usa .get() quando:
+# - La chiave POTREBBE non esistere
+# - Vuoi un default se manca
+age = user.get(&quot;age&quot;, 0)
+theme = settings.get(&quot;theme&quot;, &quot;light&quot;)
+</code></pre>
+<hr>
+<h2>🔧 Dict Methods - Reference Completa</h2>
+<h3>AGGIUNGERE/MODIFICARE</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;}
+
+# Aggiungere/modificare singolo elemento
+person[&quot;age&quot;] = 25
+person[&quot;name&quot;] = &quot;Alice Smith&quot;  # Modifica
+
+# update() - merge con altro dict
+person.update({&quot;city&quot;: &quot;NYC&quot;, &quot;job&quot;: &quot;Engineer&quot;})
+print(person)
+# {&quot;name&quot;: &quot;Alice Smith&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;, &quot;job&quot;: &quot;Engineer&quot;}
+
+# update() sovrascrive valori esistenti
+person.update({&quot;age&quot;: 26, &quot;country&quot;: &quot;USA&quot;})
+
+# setdefault() - setta solo se NON esiste
+person.setdefault(&quot;age&quot;, 30)     # Non fa nulla (age esiste)
+person.setdefault(&quot;salary&quot;, 50000)  # Aggiunge (salary non esiste)
+</code></pre>
+<h3>RIMUOVERE</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+
+# del - rimuove chiave (KeyError se non esiste)
+del person[&quot;city&quot;]
+print(person)  # {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# pop() - rimuove e ritorna valore
+age = person.pop(&quot;age&quot;)
+print(age)      # 25
+print(person)   # {&quot;name&quot;: &quot;Alice&quot;}
+
+# pop() con default (no KeyError)
+job = person.pop(&quot;job&quot;, &quot;Unknown&quot;)
+print(job)  # &quot;Unknown&quot; (job non esisteva)
+
+# popitem() - rimuove e ritorna ultima coppia (k, v)
+last_item = person.popitem()
+print(last_item)  # (&quot;name&quot;, &quot;Alice&quot;)
+
+# clear() - rimuove tutto
+person.clear()
+print(person)  # {}
+</code></pre>
+<h3>VISUALIZZARE</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+
+# keys() - vista delle chiavi
+print(person.keys())    # dict_keys([&quot;name&quot;, &quot;age&quot;, &quot;city&quot;])
+print(list(person.keys()))  # [&quot;name&quot;, &quot;age&quot;, &quot;city&quot;]
+
+# values() - vista dei valori
+print(person.values())  # dict_values([&quot;Alice&quot;, 25, &quot;NYC&quot;])
+print(list(person.values()))  # [&quot;Alice&quot;, 25, &quot;NYC&quot;]
+
+# items() - vista delle coppie (k, v)
+print(person.items())
+# dict_items([(&quot;name&quot;, &quot;Alice&quot;), (&quot;age&quot;, 25), (&quot;city&quot;, &quot;NYC&quot;)])
+print(list(person.items()))
+# [(&quot;name&quot;, &quot;Alice&quot;), (&quot;age&quot;, 25), (&quot;city&quot;, &quot;NYC&quot;)]
+</code></pre>
+<h3>COPIARE</h3>
+<pre><code class="language-python">original = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# copy() - shallow copy
+copied = original.copy()
+copied[&quot;age&quot;] = 30
+print(original)  # {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25} ← intatto
+print(copied)    # {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 30}
+
+# ⚠️ Shallow copy con nested structures
+original = {&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}}
+copied = original.copy()
+copied[&quot;user&quot;][&quot;name&quot;] = &quot;Bob&quot;
+print(original)  # {&quot;user&quot;: {&quot;name&quot;: &quot;Bob&quot;}} ← modificato!
+
+# Deep copy per nested structures
+import copy
+original = {&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}}
+deep = copy.deepcopy(original)
+deep[&quot;user&quot;][&quot;name&quot;] = &quot;Bob&quot;
+print(original)  # {&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}} ← intatto!
+</code></pre>
+<h3>ALTRI</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+
+# len() - numero di coppie
+print(len(person))  # 2
+
+# in - check se chiave esiste
+print(&quot;name&quot; in person)    # True
+print(&quot;job&quot; in person)     # False
+
+# not in
+print(&quot;job&quot; not in person)  # True
+
+# Iterare (loop diretto = loop su keys)
+for key in person:
+    print(key, person[key])
+</code></pre>
+<hr>
+<h2>🔄 Iterare su Dictionaries</h2>
+<h3>Loop su Keys (default)</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+
+# Metodo 1: loop diretto (itera su keys)
+for key in person:
+    print(key, person[key])
+
+# Metodo 2: esplicito con .keys()
+for key in person.keys():
+    print(key, person[key])
+</code></pre>
+<h3>Loop su Values</h3>
+<pre><code class="language-python"># Solo valori
+for value in person.values():
+    print(value)
+# Alice
+# 25
+# NYC
+</code></pre>
+<h3>Loop su Items (più comune!)</h3>
+<pre><code class="language-python"># Coppie (key, value)
+for key, value in person.items():
+    print(f&quot;{key}: {value}&quot;)
+# name: Alice
+# age: 25
+# city: NYC
+</code></pre>
+<h3>Enumerate con Dict</h3>
+<pre><code class="language-python"># Con indice
+for i, (key, value) in enumerate(person.items()):
+    print(f&quot;{i}: {key} = {value}&quot;)
+# 0: name = Alice
+# 1: age = 25
+# 2: city = NYC
+</code></pre>
+<h3>Dict Comprehension (filtrare/trasformare)</h3>
+<pre><code class="language-python"># Filtrare per valore
+filtered = {k: v for k, v in person.items() if isinstance(v, int)}
+print(filtered)  # {&quot;age&quot;: 25}
+
+# Trasformare valori
+doubled = {k: v*2 for k, v in person.items() if isinstance(v, int)}
+print(doubled)  # {&quot;age&quot;: 50}
+</code></pre>
+<hr>
+<h2>📐 Nested Dictionaries (JSON-like)</h2>
+<h3>Creare Nested Dicts</h3>
+<pre><code class="language-python"># User con address
+user = {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 25,
+    &quot;address&quot;: {
+        &quot;street&quot;: &quot;123 Main St&quot;,
+        &quot;city&quot;: &quot;NYC&quot;,
+        &quot;zip&quot;: &quot;10001&quot;
+    },
+    &quot;hobbies&quot;: [&quot;reading&quot;, &quot;coding&quot;]
+}
+
+# Accesso nested
+print(user[&quot;address&quot;][&quot;city&quot;])  # &quot;NYC&quot;
+print(user[&quot;hobbies&quot;][0])       # &quot;reading&quot;
+</code></pre>
+<h3>Accesso Sicuro a Nested Dicts</h3>
+<pre><code class="language-python">user = {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;address&quot;: {
+        &quot;city&quot;: &quot;NYC&quot;
+    }
+}
+
+# ❌ Unsafe (KeyError se manca)
+# print(user[&quot;address&quot;][&quot;country&quot;])  # KeyError!
+
+# ✅ Safe con .get()
+city = user.get(&quot;address&quot;, {}).get(&quot;city&quot;)
+print(city)  # &quot;NYC&quot;
+
+country = user.get(&quot;address&quot;, {}).get(&quot;country&quot;)
+print(country)  # None (no error)
+
+# ✅ Safe function
+def get_nested(data, *keys, default=None):
+    &quot;&quot;&quot;Get value from nested dict safely&quot;&quot;&quot;
+    for key in keys:
+        if isinstance(data, dict):
+            data = data.get(key)
+            if data is None:
+                return default
+        else:
+            return default
+    return data
+
+print(get_nested(user, &quot;address&quot;, &quot;city&quot;))     # &quot;NYC&quot;
+print(get_nested(user, &quot;address&quot;, &quot;country&quot;))  # None
+print(get_nested(user, &quot;address&quot;, &quot;country&quot;, default=&quot;USA&quot;))  # &quot;USA&quot;
+</code></pre>
+<h3>Flatten Nested Dict</h3>
+<pre><code class="language-python">def flatten_dict(nested, parent_key=&#39;&#39;, sep=&#39;_&#39;):
+    &quot;&quot;&quot;Flatten nested dictionary&quot;&quot;&quot;
+    items = []
+    for k, v in nested.items():
+        new_key = f&quot;{parent_key}{sep}{k}&quot; if parent_key else k
+        if isinstance(v, dict):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
+
+nested = {
+    &quot;user&quot;: {
+        &quot;name&quot;: &quot;Alice&quot;,
+        &quot;age&quot;: 25,
+        &quot;address&quot;: {
+            &quot;city&quot;: &quot;NYC&quot;
+        }
+    }
+}
+
+flat = flatten_dict(nested)
+print(flat)
+# {
+#     &quot;user_name&quot;: &quot;Alice&quot;,
+#     &quot;user_age&quot;: 25,
+#     &quot;user_address_city&quot;: &quot;NYC&quot;
+# }
+</code></pre>
+<h4>📖 Come Funziona <code>flatten_dict</code> (Step-by-Step)</h4>
+<p><strong>COSA FA:</strong>
+Trasforma un dizionario nidificato in uno &quot;piatto&quot;, concatenando le chiavi con un separatore.</p>
+<pre><code class="language-python"># PRIMA (nidificato)
+{
+    &quot;user&quot;: {
+        &quot;name&quot;: &quot;Alice&quot;,
+        &quot;age&quot;: 25,
+        &quot;address&quot;: {
+            &quot;city&quot;: &quot;NYC&quot;
+        }
+    }
+}
+
+# DOPO (piatto)
+{
+    &quot;user_name&quot;: &quot;Alice&quot;,
+    &quot;user_age&quot;: 25,
+    &quot;user_address_city&quot;: &quot;NYC&quot;
+}
+</code></pre>
+<p><strong>I PARAMETRI:</strong></p>
+<ul>
+<li><code>nested</code>: Il dizionario da appiattire</li>
+<li><code>parent_key</code>: La &quot;strada&quot; percorsa finora (es: &quot;user_address&quot;)</li>
+<li><code>sep</code>: Il separatore da usare (default <code>_</code>)</li>
+</ul>
+<p><strong>ESEMPIO STEP-BY-STEP:</strong></p>
+<pre><code class="language-python">nested = {
+    &quot;user&quot;: {
+        &quot;name&quot;: &quot;Alice&quot;,
+        &quot;age&quot;: 25,
+        &quot;address&quot;: {
+            &quot;city&quot;: &quot;NYC&quot;
+        }
+    }
+}
+
+flatten_dict(nested)
+</code></pre>
+<p><strong>CHIAMATA PRINCIPALE (livello 1):</strong></p>
+<pre><code class="language-python">nested = {&quot;user&quot;: {...}}
+parent_key = &#39;&#39;
+items = []
+
+# Loop 1: k=&quot;user&quot;, v={&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;address&quot;: {...}}
+new_key = &quot;user&quot;  # parent_key è vuoto
+isinstance(v, dict) → True  # v è un dizionario!
+# RICORSIONE: flatten_dict({&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;address&quot;: {...}}, &quot;user&quot;, &#39;_&#39;)
+</code></pre>
+<p><strong>CHIAMATA RICORSIVA #1 (livello 2):</strong></p>
+<pre><code class="language-python">nested = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;address&quot;: {&quot;city&quot;: &quot;NYC&quot;}}
+parent_key = &#39;user&#39;  # ← ereditato dalla chiamata precedente!
+items = []
+
+# Loop 1: k=&quot;name&quot;, v=&quot;Alice&quot;
+new_key = f&quot;user_name&quot;
+isinstance(v, dict) → False  # v è una stringa!
+items.append((&quot;user_name&quot;, &quot;Alice&quot;))
+# items = [(&quot;user_name&quot;, &quot;Alice&quot;)]
+
+# Loop 2: k=&quot;age&quot;, v=25
+new_key = f&quot;user_age&quot;
+isinstance(v, dict) → False
+items.append((&quot;user_age&quot;, 25))
+# items = [(&quot;user_name&quot;, &quot;Alice&quot;), (&quot;user_age&quot;, 25)]
+
+# Loop 3: k=&quot;address&quot;, v={&quot;city&quot;: &quot;NYC&quot;}
+new_key = f&quot;user_address&quot;
+isinstance(v, dict) → True  # v è ANCORA un dizionario!
+# RICORSIONE #2: flatten_dict({&quot;city&quot;: &quot;NYC&quot;}, &quot;user_address&quot;, &#39;_&#39;)
+</code></pre>
+<p><strong>CHIAMATA RICORSIVA #2 (livello 3):</strong></p>
+<pre><code class="language-python">nested = {&quot;city&quot;: &quot;NYC&quot;}
+parent_key = &#39;user_address&#39;  # ← costruito dal parent precedente!
+items = []
+
+# Loop 1: k=&quot;city&quot;, v=&quot;NYC&quot;
+new_key = f&quot;user_address_city&quot;
+isinstance(v, dict) → False  # v è una stringa!
+items.append((&quot;user_address_city&quot;, &quot;NYC&quot;))
+# items = [(&quot;user_address_city&quot;, &quot;NYC&quot;)]
+
+# Return: {&quot;user_address_city&quot;: &quot;NYC&quot;}
+</code></pre>
+<p><strong>Torna alla CHIAMATA RICORSIVA #1:</strong></p>
+<pre><code class="language-python"># Loop 3 (continua):
+items.extend([(&quot;user_address_city&quot;, &quot;NYC&quot;)])
+# items = [(&quot;user_name&quot;, &quot;Alice&quot;), (&quot;user_age&quot;, 25), (&quot;user_address_city&quot;, &quot;NYC&quot;)]
+
+# Return: {&quot;user_name&quot;: &quot;Alice&quot;, &quot;user_age&quot;: 25, &quot;user_address_city&quot;: &quot;NYC&quot;}
+</code></pre>
+<p><strong>Torna alla CHIAMATA PRINCIPALE:</strong></p>
+<pre><code class="language-python"># Loop 1 (continua):
+items.extend([(&quot;user_name&quot;, &quot;Alice&quot;), (&quot;user_age&quot;, 25), (&quot;user_address_city&quot;, &quot;NYC&quot;)])
+# items = [(&quot;user_name&quot;, &quot;Alice&quot;), (&quot;user_age&quot;, 25), (&quot;user_address_city&quot;, &quot;NYC&quot;)]
+
+# Return: {&quot;user_name&quot;: &quot;Alice&quot;, &quot;user_age&quot;: 25, &quot;user_address_city&quot;: &quot;NYC&quot;}
+</code></pre>
+<p><strong>PUNTI CHIAVE:</strong></p>
+<ol>
+<li><strong><code>.extend()</code> vs <code>.append()</code></strong></li>
+</ol>
+<pre><code class="language-python"># .append() aggiunge UN elemento
+items.append((&quot;key&quot;, &quot;value&quot;))
+
+# .extend() aggiunge TUTTI gli elementi di un iterabile
+items.extend([(&quot;k1&quot;, &quot;v1&quot;), (&quot;k2&quot;, &quot;v2&quot;)])
+</code></pre>
+<ol start="2">
+<li><strong>La ricorsione &quot;costruisce&quot; le chiavi</strong></li>
+</ol>
+<pre><code class="language-python"># Livello 1: parent_key = &quot;&quot;
+new_key = &quot;user&quot;
+
+# Livello 2: parent_key = &quot;user&quot;
+new_key = f&quot;user_{name}&quot; → &quot;user_name&quot;
+
+# Livello 3: parent_key = &quot;user_address&quot;
+new_key = f&quot;user_address_{city}&quot; → &quot;user_address_city&quot;
+</code></pre>
+<ol start="3">
+<li><strong>items è una lista di tuple</strong></li>
+</ol>
+<pre><code class="language-python">items = [(&quot;user_name&quot;, &quot;Andrea&quot;), (&quot;user_age&quot;, 30)]
+dict(items) → {&quot;user_name&quot;: &quot;Andrea&quot;, &quot;user_age&quot;: 30}
+</code></pre>
+<hr>
+<h2>💡 Patterns Comuni</h2>
+<h3>1. Counting (Frequenza)</h3>
+<pre><code class="language-python"># Count character frequency
+text = &quot;hello world&quot;
+freq = {}
+for char in text:
+    freq[char] = freq.get(char, 0) + 1
+
+print(freq)
+# {&#39;h&#39;: 1, &#39;e&#39;: 1, &#39;l&#39;: 3, &#39;o&#39;: 2, &#39; &#39;: 1, &#39;w&#39;: 1, &#39;r&#39;: 1, &#39;d&#39;: 1}
+
+# Con setdefault
+freq = {}
+for char in text:
+    freq.setdefault(char, 0)
+    freq[char] += 1
+
+# Con Counter (più semplice!)
+from collections import Counter
+freq = Counter(text)
+print(freq)  # Counter({&#39;l&#39;: 3, &#39;o&#39;: 2, ...})
+print(dict(freq))  # Converti a dict normale
+</code></pre>
+<h3>2. Grouping (Raggruppare)</h3>
+<pre><code class="language-python"># Group words by first letter
+words = [&quot;apple&quot;, &quot;banana&quot;, &quot;apricot&quot;, &quot;cherry&quot;, &quot;avocado&quot;]
+
+grouped = {}
+for word in words:
+    first_letter = word[0]
+    if first_letter not in grouped:
+        grouped[first_letter] = []
+    grouped[first_letter].append(word)
+
+print(grouped)
+# {
+#     &#39;a&#39;: [&#39;apple&#39;, &#39;apricot&#39;, &#39;avocado&#39;],
+#     &#39;b&#39;: [&#39;banana&#39;],
+#     &#39;c&#39;: [&#39;cherry&#39;]
+# }
+
+# Con setdefault (più conciso)
+grouped = {}
+for word in words:
+    grouped.setdefault(word[0], []).append(word)
+
+# Con defaultdict (ancora più semplice!)
+from collections import defaultdict
+grouped = defaultdict(list)
+for word in words:
+    grouped[word[0]].append(word)
+</code></pre>
+<h3>3. Lookup Table (Tabella di ricerca)</h3>
+<pre><code class="language-python"># Map country codes to names
+countries = {
+    &quot;US&quot;: &quot;United States&quot;,
+    &quot;UK&quot;: &quot;United Kingdom&quot;,
+    &quot;IT&quot;: &quot;Italy&quot;,
+    &quot;FR&quot;: &quot;France&quot;
+}
+
+code = &quot;IT&quot;
+country_name = countries.get(code, &quot;Unknown&quot;)
+print(country_name)  # &quot;Italy&quot;
+
+# Use case: traduzione
+translations = {
+    &quot;hello&quot;: &quot;ciao&quot;,
+    &quot;world&quot;: &quot;mondo&quot;,
+    &quot;goodbye&quot;: &quot;arrivederci&quot;
+}
+
+def translate(word):
+    return translations.get(word.lower(), word)
+
+print(translate(&quot;hello&quot;))  # &quot;ciao&quot;
+print(translate(&quot;pizza&quot;))  # &quot;pizza&quot; (not found, return original)
+</code></pre>
+<h3>4. Caching/Memoization</h3>
+<pre><code class="language-python"># Cache function results
+cache = {}
+
+def fibonacci(n):
+    if n in cache:
+        return cache[n]
+    
+    if n &lt;= 1:
+        return n
+    
+    result = fibonacci(n-1) + fibonacci(n-2)
+    cache[n] = result
+    return result
+
+print(fibonacci(10))  # 55 (fast with caching!)
+
+# Con decorator (più elegante)
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fibonacci(n):
+    if n &lt;= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+</code></pre>
+<h3>5. Default Values</h3>
+<pre><code class="language-python"># Config con defaults
+default_config = {
+    &quot;theme&quot;: &quot;light&quot;,
+    &quot;language&quot;: &quot;en&quot;,
+    &quot;timeout&quot;: 30
+}
+
+user_config = {
+    &quot;theme&quot;: &quot;dark&quot;
+}
+
+# Merge con defaults
+config = {**default_config, **user_config}
+print(config)
+# {&quot;theme&quot;: &quot;dark&quot;, &quot;language&quot;: &quot;en&quot;, &quot;timeout&quot;: 30}
+
+# O con update
+config = default_config.copy()
+config.update(user_config)
+</code></pre>
+<h3>6. Invert Dict (Swap Keys/Values)</h3>
+<pre><code class="language-python"># Swap keys and values
+original = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+inverted = {v: k for k, v in original.items()}
+print(inverted)  # {1: &quot;a&quot;, 2: &quot;b&quot;, 3: &quot;c&quot;}
+
+# ⚠️ Attenzione: valori duplicati
+original = {&quot;a&quot;: 1, &quot;b&quot;: 1, &quot;c&quot;: 2}
+inverted = {v: k for k, v in original.items()}
+print(inverted)  # {1: &quot;b&quot;, 2: &quot;c&quot;} ← &quot;a&quot; perso! (b sovrascrive a)
+
+# Soluzione: group by value
+from collections import defaultdict
+inverted = defaultdict(list)
+for k, v in original.items():
+    inverted[v].append(k)
+print(dict(inverted))  # {1: [&quot;a&quot;, &quot;b&quot;], 2: [&quot;c&quot;]}
+</code></pre>
+<hr>
+<h2>⚡ Performance &amp; Memory</h2>
+<h3>Time Complexity</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Average</th>
+<th>Worst</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Get item</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Set item</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Delete item</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Search (key in dict)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Iteration</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody></table>
+<h3>Memory Usage</h3>
+<pre><code class="language-python">import sys
+
+# Dict vs List memory
+my_list = list(range(1000))
+my_dict = {i: i for i in range(1000)}
+
+print(f&quot;List: {sys.getsizeof(my_list)} bytes&quot;)  # ~9 KB
+print(f&quot;Dict: {sys.getsizeof(my_dict)} bytes&quot;)  # ~36 KB
+
+# Dict usa più memoria per velocità!
+</code></pre>
+<h3>When to use Dict vs List?</h3>
+<p><strong>✅ Usa Dict quando:</strong></p>
+<ul>
+<li>Serve accesso rapido per chiave (O(1))</li>
+<li>Dati come key-value pairs (config, JSON, etc.)</li>
+<li>Lookup tables</li>
+<li>Counting/grouping</li>
+<li>Caching</li>
+</ul>
+<p><strong>✅ Usa List quando:</strong></p>
+<ul>
+<li>Ordine sequenziale importante</li>
+<li>Accesso per indice</li>
+<li>Dati omogenei senza chiave naturale</li>
+<li>Memoria limitata</li>
+</ul>
+<hr>
+<h2>🆚 Python Dict vs JavaScript Object</h2>
+<h3>Syntax Comparison</h3>
+<pre><code class="language-javascript">// JavaScript Object
+const person = {
+    name: &quot;Alice&quot;,
+    age: 25,
+    &quot;complex-key&quot;: &quot;value&quot;
+};
+
+// Access
+console.log(person.name);        // &quot;Alice&quot;
+console.log(person[&quot;name&quot;]);     // &quot;Alice&quot;
+console.log(person.job);         // undefined
+console.log(person.job || &quot;Unknown&quot;);  // &quot;Unknown&quot;
+
+// Add/modify
+person.city = &quot;NYC&quot;;
+person.age = 26;
+
+// Delete
+delete person.city;
+
+// Check key
+&quot;name&quot; in person;  // true
+person.hasOwnProperty(&quot;name&quot;);  // true
+
+// Iterate
+Object.keys(person);      // [&quot;name&quot;, &quot;age&quot;]
+Object.values(person);    // [&quot;Alice&quot;, 26]
+Object.entries(person);   // [[&quot;name&quot;, &quot;Alice&quot;], [&quot;age&quot;, 26]]
+
+for (const [key, value] of Object.entries(person)) {
+    console.log(key, value);
+}
+</code></pre>
+<pre><code class="language-python"># Python Dictionary
+person = {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 25,
+    &quot;complex-key&quot;: &quot;value&quot;
+}
+
+# Access
+print(person[&quot;name&quot;])         # &quot;Alice&quot;
+# print(person[&quot;job&quot;])        # KeyError!
+print(person.get(&quot;job&quot;))      # None
+print(person.get(&quot;job&quot;, &quot;Unknown&quot;))  # &quot;Unknown&quot;
+
+# Add/modify
+person[&quot;city&quot;] = &quot;NYC&quot;
+person[&quot;age&quot;] = 26
+
+# Delete
+del person[&quot;city&quot;]
+
+# Check key
+&quot;name&quot; in person  # True
+
+# Iterate
+person.keys()      # dict_keys([&quot;name&quot;, &quot;age&quot;])
+person.values()    # dict_values([&quot;Alice&quot;, 26])
+person.items()     # dict_items([(&quot;name&quot;, &quot;Alice&quot;), (&quot;age&quot;, 26)])
+
+for key, value in person.items():
+    print(key, value)
+</code></pre>
+<h3>Key Differences</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Python Dict</th>
+<th>JavaScript Object</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Missing key</td>
+<td><code>KeyError</code> or <code>.get()</code></td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td>Key types</td>
+<td>Any immutable</td>
+<td>String/Symbol only</td>
+</tr>
+<tr>
+<td>Dot notation</td>
+<td>❌ No</td>
+<td>✅ Yes (<code>obj.key</code>)</td>
+</tr>
+<tr>
+<td>Ordered</td>
+<td>✅ (3.7+)</td>
+<td>✅ (ES2015+)</td>
+</tr>
+<tr>
+<td>Methods</td>
+<td><code>.keys()</code>, <code>.values()</code>, <code>.items()</code></td>
+<td><code>Object.keys()</code>, etc.</td>
+</tr>
+<tr>
+<td>Check key</td>
+<td><code>key in dict</code></td>
+<td><code>key in obj</code> or <code>hasOwnProperty</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>⚠️ Common Gotchas</h2>
+<h3>1. Mutable Keys (NO!)</h3>
+<pre><code class="language-python"># ❌ List as key (unhashable)
+# my_dict = {[1, 2]: &quot;value&quot;}  # TypeError: unhashable type: &#39;list&#39;
+
+# ❌ Dict as key
+# my_dict = {{&quot;a&quot;: 1}: &quot;value&quot;}  # TypeError
+
+# ✅ Tuple as key (immutable)
+my_dict = {(1, 2): &quot;value&quot;}  # OK
+
+# ✅ String, int, float as keys
+my_dict = {&quot;key&quot;: 1, 42: &quot;value&quot;, 3.14: &quot;pi&quot;}  # OK
+</code></pre>
+<h3>2. Modifying Dict During Iteration</h3>
+<pre><code class="language-python"># ❌ SBAGLIATO
+person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;city&quot;: &quot;NYC&quot;}
+for key in person:
+    if key == &quot;age&quot;:
+        del person[key]  # RuntimeError!
+
+# ✅ CORRETTO - itera su copia
+for key in list(person.keys()):
+    if key == &quot;age&quot;:
+        del person[key]
+
+# ✅ O crea nuovo dict
+person = {k: v for k, v in person.items() if k != &quot;age&quot;}
+</code></pre>
+<h3>3. Default Mutable Arguments</h3>
+<pre><code class="language-python"># ❌ SBAGLIATO
+def add_item(item, my_dict={}):  # ❌ Dict condiviso!
+    my_dict[item] = True
+    return my_dict
+
+print(add_item(&quot;a&quot;))  # {&quot;a&quot;: True}
+print(add_item(&quot;b&quot;))  # {&quot;a&quot;: True, &quot;b&quot;: True} ← Condiviso!
+
+# ✅ CORRETTO
+def add_item(item, my_dict=None):
+    if my_dict is None:
+        my_dict = {}
+    my_dict[item] = True
+    return my_dict
+</code></pre>
+<h3>4. Shallow Copy Gotcha</h3>
+<pre><code class="language-python"># Shallow copy con nested dicts
+original = {&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}}
+copied = original.copy()
+
+copied[&quot;user&quot;][&quot;name&quot;] = &quot;Bob&quot;
+print(original)  # {&quot;user&quot;: {&quot;name&quot;: &quot;Bob&quot;}} ← Modificato!
+
+# Usa deepcopy
+import copy
+deep = copy.deepcopy(original)
+deep[&quot;user&quot;][&quot;name&quot;] = &quot;Charlie&quot;
+print(original)  # {&quot;user&quot;: {&quot;name&quot;: &quot;Bob&quot;}} ← Intatto
+</code></pre>
+<h3>5. Dict Order Before 3.7</h3>
+<pre><code class="language-python"># Python &lt; 3.7: ordine non garantito
+# Python &gt;= 3.7: ordine di inserimento garantito
+
+my_dict = {&quot;c&quot;: 3, &quot;a&quot;: 1, &quot;b&quot;: 2}
+print(my_dict)
+# Python 3.7+: {&quot;c&quot;: 3, &quot;a&quot;: 1, &quot;b&quot;: 2} (ordine mantenuto)
+# Python 3.6-: ordine imprevedibile
+
+# Se serve ordine garantito in 3.6-, usa OrderedDict
+from collections import OrderedDict
+ordered = OrderedDict([(&quot;c&quot;, 3), (&quot;a&quot;, 1), (&quot;b&quot;, 2)])
+</code></pre>
+<hr>
+<h2>📝 Best Practices</h2>
+<h3>✅ DO:</h3>
+<pre><code class="language-python"># 1. Usa .get() per chiavi potenzialmente mancanti
+age = user.get(&quot;age&quot;, 0)  # ✅ Safe
+
+# 2. Usa &#39;in&#39; per check esistenza prima di accedere
+if &quot;email&quot; in user:
+    print(user[&quot;email&quot;])
+
+# 3. Usa dict comprehension per filtrare/trasformare
+filtered = {k: v for k, v in data.items() if v &gt; 0}
+
+# 4. Usa items() per iterare su key-value
+for key, value in person.items():
+    print(f&quot;{key}: {value}&quot;)
+
+# 5. Usa setdefault per default values
+counts.setdefault(key, 0)
+counts[key] += 1
+
+# 6. Usa ** per merge dicts (Python 3.5+)
+merged = {**dict1, **dict2}
+
+# 7. Usa Counter per counting
+from collections import Counter
+freq = Counter(text)
+</code></pre>
+<h3>❌ DON&#39;T:</h3>
+<pre><code class="language-python"># 1. Non usare [] se chiave può mancare
+# value = data[&quot;key&quot;]  # ❌ KeyError risk
+value = data.get(&quot;key&quot;, default)  # ✅
+
+# 2. Non modificare dict durante iterazione
+# for k in d: del d[k]  # ❌ RuntimeError
+for k in list(d.keys()): del d[k]  # ✅
+
+# 3. Non usare liste come chiavi
+# d = {[1, 2]: &quot;value&quot;}  # ❌ TypeError
+d = {(1, 2): &quot;value&quot;}  # ✅ Tuple
+
+# 4. Non creare nested dicts manualmente se complessi
+# Usa defaultdict o JSON
+from collections import defaultdict
+nested = defaultdict(lambda: defaultdict(list))
+</code></pre>
+<hr>
+<h2>🎯 Use Cases Reali</h2>
+<h3>1. Config/Settings</h3>
+<pre><code class="language-python">config = {
+    &quot;database&quot;: {
+        &quot;host&quot;: &quot;localhost&quot;,
+        &quot;port&quot;: 5432,
+        &quot;name&quot;: &quot;mydb&quot;
+    },
+    &quot;cache&quot;: {
+        &quot;enabled&quot;: True,
+        &quot;ttl&quot;: 3600
+    }
+}
+
+db_host = config[&quot;database&quot;][&quot;host&quot;]
+</code></pre>
+<h3>2. JSON Data (APIs)</h3>
+<pre><code class="language-python">import json
+
+# Parse JSON
+user_json = &#39;{&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25, &quot;hobbies&quot;: [&quot;reading&quot;]}&#39;
+user = json.loads(user_json)
+print(user[&quot;name&quot;])  # &quot;Alice&quot;
+
+# Create JSON
+data = {&quot;status&quot;: &quot;success&quot;, &quot;data&quot;: [1, 2, 3]}
+json_string = json.dumps(data)
+</code></pre>
+<h3>3. Word Frequency</h3>
+<pre><code class="language-python">text = &quot;hello world hello python world&quot;
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+
+print(freq)  # {&quot;hello&quot;: 2, &quot;world&quot;: 2, &quot;python&quot;: 1}
+
+# Top 3 most common
+from collections import Counter
+freq = Counter(text.split())
+print(freq.most_common(3))
+</code></pre>
+<h3>4. Database Results</h3>
+<pre><code class="language-python"># Simulate DB query result
+users = [
+    {&quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;, &quot;role&quot;: &quot;admin&quot;},
+    {&quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot;, &quot;role&quot;: &quot;user&quot;},
+    {&quot;id&quot;: 3, &quot;name&quot;: &quot;Charlie&quot;, &quot;role&quot;: &quot;user&quot;}
+]
+
+# Index by ID
+users_by_id = {user[&quot;id&quot;]: user for user in users}
+print(users_by_id[2])  # {&quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot;, ...}
+
+# Group by role
+from collections import defaultdict
+by_role = defaultdict(list)
+for user in users:
+    by_role[user[&quot;role&quot;]].append(user)
+
+print(by_role[&quot;admin&quot;])  # [{&quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;, ...}]
+</code></pre>
+<h3>5. Caching</h3>
+<pre><code class="language-python"># Function result cache
+cache = {}
+
+def expensive_function(x):
+    if x in cache:
+        return cache[x]
+    
+    # Expensive computation
+    result = x ** 2
+    cache[x] = result
+    return result
+</code></pre>
+<hr>
+<h2>📊 Quick Reference</h2>
+<pre><code class="language-python"># CREAZIONE
+d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
+d = dict(a=1, b=2)
+d = dict([(&quot;a&quot;, 1), (&quot;b&quot;, 2)])
+d = {x: x**2 for x in range(5)}
+
+# ACCESSO
+d[&quot;key&quot;]               # KeyError if missing
+d.get(&quot;key&quot;)           # None if missing
+d.get(&quot;key&quot;, default)  # default if missing
+
+# AGGIUNGERE/MODIFICARE
+d[&quot;key&quot;] = value
+d.update({&quot;k&quot;: v})
+d.setdefault(&quot;k&quot;, v)
+
+# RIMUOVERE
+del d[&quot;key&quot;]
+d.pop(&quot;key&quot;)
+d.popitem()
+d.clear()
+
+# VISUALIZZARE
+d.keys()
+d.values()
+d.items()
+
+# ITERARE
+for key in d:
+    pass
+for key, value in d.items():
+    pass
+
+# CHECK
+&quot;key&quot; in d
+len(d)
+
+# COPIARE
+d.copy()               # Shallow
+copy.deepcopy(d)       # Deep
+</code></pre>
+<hr>
+<h2>🎓 Recap</h2>
+<p><strong>Dictionaries sono:</strong></p>
+<ul>
+<li>✅ Key-value pairs</li>
+<li>✅ Ordered (3.7+)</li>
+<li>✅ Mutable</li>
+<li>✅ O(1) lookup</li>
+<li>✅ Keys immutable only</li>
+</ul>
+<p><strong>Quando usare Dict:</strong></p>
+<ul>
+<li>Key-value mapping (config, JSON)</li>
+<li>Fast lookup per chiave</li>
+<li>Counting/frequency</li>
+<li>Grouping data</li>
+<li>Caching</li>
+</ul>
+<p><strong>Pattern chiave:</strong></p>
+<ul>
+<li><code>.get()</code> per accesso sicuro</li>
+<li><code>items()</code> per iterazione</li>
+<li>Comprehension per filtrare/trasformare</li>
+<li><code>Counter</code> per counting</li>
+<li><code>defaultdict</code> per grouping</li>
+</ul>
+<p><strong>Prossimi passi:</strong></p>
+<ul>
+<li>Pratica con Exercise 1.5</li>
+<li>Usa dict per JSON/API data</li>
+<li>Impara <code>Counter</code> e <code>defaultdict</code></li>
+<li>Patterns: counting, grouping, lookup</li>
+</ul>
+</body>
+</html>

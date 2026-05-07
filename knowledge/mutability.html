@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>mutability.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>Mutabilità in Python - Guida Completa</h1>
+<hr>
+<h2>🎯 Concetto Base</h2>
+<h3><strong>Immutabile</strong> ❄️ = NON puoi modificare l&#39;oggetto dopo averlo creato</h3>
+<p>Se vuoi &quot;cambiarlo&quot;, Python crea un <strong>nuovo oggetto</strong> in memoria.</p>
+<h3><strong>Mutabile</strong> 🔥 = PUOI modificare l&#39;oggetto direttamente</h3>
+<p>L&#39;oggetto rimane lo stesso in memoria, ma il suo contenuto cambia.</p>
+<hr>
+<h2>📊 Tipi Mutabili vs Immutabili</h2>
+<table>
+<thead>
+<tr>
+<th><strong>IMMUTABILI</strong> ❄️</th>
+<th><strong>MUTABILI</strong> 🔥</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>int</code></td>
+<td><code>list</code></td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td><code>dict</code></td>
+</tr>
+<tr>
+<td><code>str</code></td>
+<td><code>set</code></td>
+</tr>
+<tr>
+<td><code>tuple</code></td>
+<td>(oggetti personalizzati)</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>frozenset</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Regola semplice:</strong></p>
+<ul>
+<li>Se puoi fare <code>.append()</code>, <code>.remove()</code>, <code>[0] = nuovo_valore</code> → <strong>Mutabile</strong></li>
+<li>Se ogni modifica crea un nuovo oggetto → <strong>Immutabile</strong></li>
+</ul>
+<hr>
+<h2>🔍 Esempi Pratici - Immutabili</h2>
+<h3>1. Stringhe (Immutabili)</h3>
+<pre><code class="language-python">name = &quot;Alice&quot;
+print(id(name))  # 140234567890 (indirizzo memoria)
+
+# Provi a &quot;modificare&quot; la stringa
+name = name.upper()
+print(name)      # &quot;ALICE&quot;
+print(id(name))  # 140234567999 ← DIVERSO! Nuovo oggetto!
+</code></pre>
+<p><strong>Cosa succede in memoria:</strong></p>
+<pre><code>PRIMA:
+name → &quot;Alice&quot; (indirizzo: 140234567890)
+
+DOPO name.upper():
+name → &quot;ALICE&quot; (indirizzo: 140234567999) ← NUOVO OGGETTO!
+       &quot;Alice&quot; (indirizzo: 140234567890) ← rimane in memoria, poi garbage collector lo elimina
+</code></pre>
+<h3>2. Numeri (Immutabili)</h3>
+<pre><code class="language-python">x = 10
+print(id(x))  # 140234560000
+
+x = x + 5
+print(x)      # 15
+print(id(x))  # 140234560160 ← DIVERSO! Nuovo oggetto!
+</code></pre>
+<p><strong>Non puoi modificare il numero 10 stesso:</strong></p>
+<pre><code class="language-python">x = 10
+# Non esiste un modo per &quot;cambiare&quot; il 10 in 15
+# Puoi solo riassegnare x ad un nuovo numero
+</code></pre>
+<h3>3. Tuple (Immutabili)</h3>
+<pre><code class="language-python">coords = (1, 2, 3)
+print(id(coords))  # 140234570000
+
+# Provi a modificare
+# coords[0] = 99  # ❌ TypeError: &#39;tuple&#39; object does not support item assignment
+
+# Puoi solo creare una NUOVA tupla
+coords = (99, 2, 3)
+print(id(coords))  # 140234570111 ← NUOVO OGGETTO!
+</code></pre>
+<hr>
+<h2>🔥 Esempi Pratici - Mutabili</h2>
+<h3>1. Liste (Mutabili)</h3>
+<pre><code class="language-python">numbers = [1, 2, 3]
+print(id(numbers))  # 140234580000
+
+# Modifichi la lista DIRETTAMENTE
+numbers.append(4)
+print(numbers)      # [1, 2, 3, 4]
+print(id(numbers))  # 140234580000 ← STESSO OGGETTO!
+
+numbers[0] = 99
+print(numbers)      # [99, 2, 3, 4]
+print(id(numbers))  # 140234580000 ← ANCORA LO STESSO!
+</code></pre>
+<p><strong>Cosa succede in memoria:</strong></p>
+<pre><code>MEMORIA:
+numbers → [1, 2, 3] (indirizzo: 140234580000)
+
+Dopo append(4):
+numbers → [1, 2, 3, 4] (indirizzo: 140234580000) ← STESSO OGGETTO!
+          ↑ il contenuto è cambiato, ma l&#39;oggetto è lo stesso
+</code></pre>
+<h3>2. Dizionari (Mutabili)</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 25}
+print(id(person))  # 140234590000
+
+# Modifichi il dizionario
+person[&quot;age&quot;] = 26
+print(person)      # {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 26}
+print(id(person))  # 140234590000 ← STESSO OGGETTO!
+
+person[&quot;city&quot;] = &quot;NYC&quot;
+print(id(person))  # 140234590000 ← SEMPRE LO STESSO!
+</code></pre>
+<h3>3. Set (Mutabili)</h3>
+<pre><code class="language-python">tags = {&quot;python&quot;, &quot;coding&quot;}
+print(id(tags))  # 140234595000
+
+tags.add(&quot;tutorial&quot;)
+print(tags)      # {&quot;python&quot;, &quot;coding&quot;, &quot;tutorial&quot;}
+print(id(tags))  # 140234595000 ← STESSO OGGETTO!
+</code></pre>
+<hr>
+<h2>⚠️ Il Problema dei Riferimenti (CRITICO!)</h2>
+<h3>Con Immutabili (Safe ✅)</h3>
+<pre><code class="language-python">a = 10
+b = a  # b copia il VALORE
+
+a = 20  # crea un NUOVO oggetto
+
+print(a)  # 20
+print(b)  # 10 ← NON è cambiato! ✅
+</code></pre>
+<p><strong>Memoria:</strong></p>
+<pre><code>INIZIALMENTE:
+a → 10 (indirizzo: 1000)
+b → 10 (indirizzo: 1000)  ← stesso oggetto OK (è immutabile)
+
+DOPO a = 20:
+a → 20 (indirizzo: 1100)  ← nuovo oggetto
+b → 10 (indirizzo: 1000)  ← rimane com&#39;era
+</code></pre>
+<h3>Con Mutabili (DANGEROUS! ⚠️)</h3>
+<pre><code class="language-python">list1 = [1, 2, 3]
+list2 = list1  # list2 NON copia! Punta allo STESSO oggetto!
+
+list1.append(4)
+
+print(list1)  # [1, 2, 3, 4]
+print(list2)  # [1, 2, 3, 4] ← È CAMBIATO ANCHE list2! ⚠️
+</code></pre>
+<p><strong>Memoria:</strong></p>
+<pre><code>list1 → [1, 2, 3] ← indirizzo: 140234580000
+list2 → [1, 2, 3] ← indirizzo: 140234580000 (STESSO!)
+
+Dopo list1.append(4):
+list1 → [1, 2, 3, 4] ← indirizzo: 140234580000
+list2 → [1, 2, 3, 4] ← indirizzo: 140234580000 (ancora lo STESSO!)
+</code></pre>
+<p><strong>list1 e list2 sono due nomi che puntano allo STESSO oggetto in memoria!</strong></p>
+<hr>
+<h2>🛡️ Come Fare una Vera Copia (Mutabili)</h2>
+<h3>1. Shallow Copy (copia superficiale)</h3>
+<p><strong>Per liste semplici (non nidificate):</strong></p>
+<pre><code class="language-python">list1 = [1, 2, 3]
+list2 = list1.copy()  # VERA copia!
+# Alternativi:
+# list2 = list(list1)
+# list2 = list1[:]
+
+list1.append(4)
+
+print(list1)  # [1, 2, 3, 4]
+print(list2)  # [1, 2, 3] ← NON è cambiato! ✅
+
+print(id(list1))  # 140234580000
+print(id(list2))  # 140234580111 ← DIVERSO!
+</code></pre>
+<p><strong>Per dizionari:</strong></p>
+<pre><code class="language-python">dict1 = {&quot;a&quot;: 1, &quot;b&quot;: 2}
+dict2 = dict1.copy()
+
+dict1[&quot;c&quot;] = 3
+print(dict1)  # {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+print(dict2)  # {&quot;a&quot;: 1, &quot;b&quot;: 2} ✅
+</code></pre>
+<h3>2. Deep Copy (per strutture nidificate)</h3>
+<h4>Il Problema con Shallow Copy</h4>
+<pre><code class="language-python">list1 = [[1, 2], [3, 4]]
+list2 = list1.copy()  # Shallow copy
+
+list1[0].append(99)
+
+print(list1)  # [[1, 2, 99], [3, 4]]
+print(list2)  # [[1, 2, 99], [3, 4]] ← È cambiato! ⚠️
+</code></pre>
+<p><strong>Perché?</strong> Shallow copy copia solo il <strong>primo livello</strong>.</p>
+<h4>Primo Livello vs Livelli Annidati</h4>
+<pre><code class="language-python">list1 = [[1, 2], [3, 4]]
+</code></pre>
+<p><strong>Struttura:</strong></p>
+<pre><code>list1 (primo livello) → contiene 2 elementi:
+                        ├─ elemento [0] → [1, 2]  ← secondo livello
+                        └─ elemento [1] → [3, 4]  ← secondo livello
+</code></pre>
+<p><strong>Memoria con Shallow Copy:</strong></p>
+<pre><code>list1 → [riferimento_A, riferimento_B]
+           ↓              ↓
+list2 → [riferimento_A, riferimento_B]  ← puntano agli STESSI oggetti!
+           ↓              ↓
+        [1, 2]         [3, 4]  ← condivisi!
+</code></pre>
+<h4>La Soluzione: Deep Copy</h4>
+<pre><code class="language-python">import copy
+
+list1 = [[1, 2], [3, 4]]
+list2 = copy.deepcopy(list1)  # Deep copy
+
+list1[0].append(99)
+
+print(list1)  # [[1, 2, 99], [3, 4]]
+print(list2)  # [[1, 2], [3, 4]] ← NON cambiato! ✅
+</code></pre>
+<p><strong>Memoria con Deep Copy:</strong></p>
+<pre><code>list1 → [riferimento_A, riferimento_B]
+           ↓              ↓
+        [1, 2]         [3, 4]
+
+list2 → [riferimento_C, riferimento_D]
+           ↓              ↓
+        [1, 2]         [3, 4]  ← COPIE SEPARATE!
+</code></pre>
+<h4>Quando Usare Shallow vs Deep Copy</h4>
+<table>
+<thead>
+<tr>
+<th>Situazione</th>
+<th>Usa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Lista semplice <code>[1, 2, 3]</code></td>
+<td>Shallow copy (<code>.copy()</code>)</td>
+</tr>
+<tr>
+<td>Lista di liste <code>[[1, 2], [3, 4]]</code></td>
+<td><strong>Deep copy</strong> (<code>copy.deepcopy()</code>)</td>
+</tr>
+<tr>
+<td>Dict semplice <code>{&quot;a&quot;: 1}</code></td>
+<td>Shallow copy (<code>.copy()</code>)</td>
+</tr>
+<tr>
+<td>Dict nidificato <code>{&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}}</code></td>
+<td><strong>Deep copy</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>💣 Gotcha Classico: Default Arguments</h2>
+<h3>IL PROBLEMA (uno dei bug più comuni!)</h3>
+<pre><code class="language-python">def add_item(item, my_list=[]):  # ❌ PERICOLOSO!
+    my_list.append(item)
+    return my_list
+
+# Prima chiamata
+result1 = add_item(&quot;apple&quot;)
+print(result1)  # [&quot;apple&quot;] ✅
+
+# Seconda chiamata
+result2 = add_item(&quot;banana&quot;)
+print(result2)  # [&quot;apple&quot;, &quot;banana&quot;] ⚠️ WTF?!
+
+# Terza chiamata
+result3 = add_item(&quot;cherry&quot;)
+print(result3)  # [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;] ⚠️⚠️⚠️
+</code></pre>
+<p><strong>Perché succede?</strong></p>
+<p>La lista <code>[]</code> viene creata <strong>UNA SOLA VOLTA</strong> quando la funzione viene <strong>definita</strong>, NON ogni volta che viene chiamata!</p>
+<pre><code class="language-python"># Quando Python legge questa riga:
+def add_item(item, my_list=[]):  # ← lista creata QUI, una volta sola!
+    ...
+
+# Tutte le chiamate usano la STESSA lista in memoria!
+</code></pre>
+<h3>LA SOLUZIONE</h3>
+<pre><code class="language-python">def add_item(item, my_list=None):  # ✅ CORRETTO!
+    if my_list is None:
+        my_list = []  # Crea una NUOVA lista ogni volta
+    my_list.append(item)
+    return my_list
+
+result1 = add_item(&quot;apple&quot;)
+print(result1)  # [&quot;apple&quot;] ✅
+
+result2 = add_item(&quot;banana&quot;)
+print(result2)  # [&quot;banana&quot;] ✅ Corretto!
+
+result3 = add_item(&quot;cherry&quot;)
+print(result3)  # [&quot;cherry&quot;] ✅ Perfetto!
+</code></pre>
+<p><strong>Regola d&#39;oro:</strong> </p>
+<pre><code class="language-python"># ❌ MAI fare questo con mutabili:
+def func(data=[]):
+def func(data={}):
+def func(data=set()):
+
+# ✅ Usa sempre None:
+def func(data=None):
+    if data is None:
+        data = []  # o {} o set()
+</code></pre>
+<hr>
+<h2>🔍 Side Effects nelle Funzioni</h2>
+<h3>Esempio 1: Modificare una lista passata</h3>
+<pre><code class="language-python">def add_exclamation(words):
+    words.append(&quot;!&quot;)  # Modifica la lista originale!
+    return words
+
+my_words = [&quot;hello&quot;, &quot;world&quot;]
+result = add_exclamation(my_words)
+
+print(result)    # [&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;]
+print(my_words)  # [&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;] ← cambiato! ⚠️
+</code></pre>
+<p><strong>Questo è un &quot;side effect&quot; (effetto collaterale).</strong></p>
+<h3>Versione Senza Side Effects (Meglio!)</h3>
+<pre><code class="language-python">def add_exclamation(words):
+    new_words = words.copy()  # Copia!
+    new_words.append(&quot;!&quot;)
+    return new_words
+
+my_words = [&quot;hello&quot;, &quot;world&quot;]
+result = add_exclamation(my_words)
+
+print(result)    # [&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;]
+print(my_words)  # [&quot;hello&quot;, &quot;world&quot;] ← NON cambiato! ✅
+</code></pre>
+<h3>Esempio 2: Con Immutabili (Sempre Safe)</h3>
+<pre><code class="language-python">def add_exclamation(text):
+    return text + &quot;!&quot;  # Crea una NUOVA stringa
+
+my_text = &quot;hello&quot;
+result = add_exclamation(my_text)
+
+print(result)   # &quot;hello!&quot;
+print(my_text)  # &quot;hello&quot; ← NON cambiato! ✅ (str è immutabile)
+</code></pre>
+<hr>
+<h2>🆚 Confronto con JavaScript</h2>
+<h3>JavaScript</h3>
+<pre><code class="language-javascript">// Immutabili (primitives)
+let x = 10;
+let y = x;
+x = 20;
+console.log(y);  // 10 ✅
+
+// Mutabili (objects, arrays)
+const arr1 = [1, 2, 3];
+const arr2 = arr1;  // riferimento!
+arr1.push(4);
+console.log(arr2);  // [1, 2, 3, 4] ⚠️
+
+// Copia vera
+const arr3 = [...arr1];        // spread operator
+const arr4 = Array.from(arr1);
+const arr5 = arr1.slice();
+
+// Deep copy
+const obj1 = {user: {name: &quot;Alice&quot;}};
+const obj2 = structuredClone(obj1);  // deep copy (nuovo!)
+// o JSON.parse(JSON.stringify(obj1)) (vecchio modo)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python"># Immutabili
+x = 10
+y = x
+x = 20
+print(y)  # 10 ✅
+
+# Mutabili
+arr1 = [1, 2, 3]
+arr2 = arr1  # riferimento!
+arr1.append(4)
+print(arr2)  # [1, 2, 3, 4] ⚠️
+
+# Copia vera
+arr3 = arr1.copy()
+arr4 = list(arr1)
+arr5 = arr1[:]
+
+# Deep copy
+import copy
+obj1 = {&quot;user&quot;: {&quot;name&quot;: &quot;Alice&quot;}}
+obj2 = copy.deepcopy(obj1)
+</code></pre>
+<p><strong>Molto simili!</strong></p>
+<hr>
+<h2>📝 Quick Test</h2>
+<p>Indovina l&#39;output:</p>
+<pre><code class="language-python"># Test 1
+x = &quot;hello&quot;
+y = x
+x = x.upper()
+print(y)  # ???
+
+# Test 2
+list1 = [1, 2, 3]
+list2 = list1
+list1.append(4)
+print(list2)  # ???
+
+# Test 3
+tuple1 = (1, 2, [3, 4])
+tuple1[2].append(5)
+print(tuple1)  # ???
+
+# Test 4
+def modify(data):
+    data.append(99)
+
+my_list = [1, 2, 3]
+modify(my_list)
+print(my_list)  # ???
+</code></pre>
+<details>
+<summary>Risposte:</summary>
+
+<pre><code class="language-python"># Test 1
+print(y)  # &quot;hello&quot; 
+# str è immutabile, y non cambia ✅
+
+# Test 2
+print(list2)  # [1, 2, 3, 4]
+# list è mutabile, list2 punta allo stesso oggetto ⚠️
+
+# Test 3
+print(tuple1)  # (1, 2, [3, 4, 5])
+# Tuple è immutabile (stessi 3 elementi), 
+# ma la lista dentro è mutabile! ⚠️
+
+# Test 4
+print(my_list)  # [1, 2, 3, 99]
+# La funzione modifica la lista originale (side effect) ⚠️
+</code></pre>
+</details>
+
+<hr>
+<h2>🎓 Regole da Ricordare</h2>
+<h3>1. Immutabile = nuovo oggetto ogni volta</h3>
+<pre><code class="language-python"># int, float, str, tuple, bool, frozenset, None
+x = &quot;hello&quot;
+x = x.upper()  # Crea un NUOVO oggetto
+</code></pre>
+<h3>2. Mutabile = modifichi l&#39;oggetto stesso</h3>
+<pre><code class="language-python"># list, dict, set
+my_list = [1, 2, 3]
+my_list.append(4)  # Modifica lo STESSO oggetto
+</code></pre>
+<h3>3. Assegnazione con mutabili = riferimento!</h3>
+<pre><code class="language-python">list2 = list1        # ❌ NON è una copia! Stesso oggetto
+list2 = list1.copy() # ✅ Questa è una copia vera
+</code></pre>
+<h3>4. Default arguments con mutabili = usa None!</h3>
+<pre><code class="language-python">def func(data=None):  # ✅ Corretto
+    if data is None:
+        data = []
+
+def func(data=[]):    # ❌ Bug classico!
+</code></pre>
+<h3>5. Shallow copy vs Deep copy</h3>
+<pre><code class="language-python"># Lista semplice
+list2 = list1.copy()  # ✅ Shallow copy OK
+
+# Lista nidificata
+import copy
+list2 = copy.deepcopy(list1)  # ✅ Deep copy necessario
+</code></pre>
+<h3>6. frozenset esiste per essere immutabile</h3>
+<pre><code class="language-python">my_set = {1, 2, 3}        # Mutabile
+frozen = frozenset([1, 2, 3])  # Immutabile
+
+# frozenset può essere:
+# - chiave di dict
+# - elemento di un set
+# - argomento hashable
+</code></pre>
+<hr>
+<h2>💡 Best Practices</h2>
+<h3>✅ DO:</h3>
+<pre><code class="language-python"># Usa copy() per evitare side effects
+def process_list(items):
+    result = items.copy()
+    result.sort()
+    return result
+
+# Usa None come default
+def add_user(name, friends=None):
+    if friends is None:
+        friends = []
+    friends.append(name)
+    return friends
+
+# Usa deepcopy per strutture nidificate
+import copy
+config_backup = copy.deepcopy(config)
+</code></pre>
+<h3>❌ DON&#39;T:</h3>
+<pre><code class="language-python"># Non modificare liste passate senza copy
+def process_list(items):
+    items.sort()  # ❌ Side effect!
+    return items
+
+# Non usare mutabili come default
+def add_user(name, friends=[]):  # ❌ Bug!
+    friends.append(name)
+    return friends
+
+# Non fare shallow copy di strutture nidificate
+nested = [[1, 2], [3, 4]]
+copy = nested.copy()  # ❌ Non basta!
+</code></pre>
+<hr>
+<h2>🔗 Relazione con Altri Concetti</h2>
+<h3>Mutabilità e Hashing</h3>
+<pre><code class="language-python"># Solo oggetti immutabili possono essere &quot;hashed&quot;
+hash(5)          # ✅ OK
+hash(&quot;hello&quot;)    # ✅ OK
+hash((1, 2))     # ✅ OK
+
+# hash([1, 2])   # ❌ TypeError: unhashable type: &#39;list&#39;
+# hash({1, 2})   # ❌ TypeError: unhashable type: &#39;set&#39;
+
+# Questo significa:
+# - Solo immutabili possono essere chiavi di dict
+# - Solo immutabili possono essere elementi di set
+</code></pre>
+<h3>Mutabilità e Memory</h3>
+<pre><code class="language-python"># Immutabili: Python può riusare oggetti
+a = 257
+b = 257
+print(a is b)  # False (numeri grandi = oggetti diversi)
+
+a = 5
+b = 5
+print(a is b)  # True (piccoli numeri = stesso oggetto, ottimizzazione)
+
+# Mutabili: sempre oggetti diversi
+a = [1, 2, 3]
+b = [1, 2, 3]
+print(a is b)  # False (liste diverse anche se contenuto uguale)
+</code></pre>
+<hr>
+<h2>🎯 Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Mutabile?</th>
+<th>Dopo modifica</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>int</code>, <code>float</code>, <code>str</code></td>
+<td>❌ No</td>
+<td>Nuovo oggetto</td>
+<td>Valori semplici</td>
+</tr>
+<tr>
+<td><code>tuple</code></td>
+<td>❌ No</td>
+<td>Nuovo oggetto</td>
+<td>Dati immutabili, chiavi dict</td>
+</tr>
+<tr>
+<td><code>frozenset</code></td>
+<td>❌ No</td>
+<td>Nuovo oggetto</td>
+<td>Set come chiave dict</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td>✅ Sì</td>
+<td>Stesso oggetto</td>
+<td>Collezioni dinamiche</td>
+</tr>
+<tr>
+<td><code>dict</code></td>
+<td>✅ Sì</td>
+<td>Stesso oggetto</td>
+<td>Mappature chiave-valore</td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td>✅ Sì</td>
+<td>Stesso oggetto</td>
+<td>Elementi unici</td>
+</tr>
+</tbody></table>
+<p><strong>Ricorda:</strong> Mutabilità ≠ &quot;Buono&quot; o &quot;Cattivo&quot;. Sono strumenti diversi per scopi diversi. La chiave è <strong>sapere cosa stai usando</strong> e <strong>fare copie quando necessario</strong>! 🎯</p>
+</body>
+</html>

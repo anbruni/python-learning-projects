@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>sets.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>Python Sets - Guida Completa</h1>
+<h2>🎯 Cos&#39;è un Set?</h2>
+<p><strong>Definizione:</strong> Una collezione <strong>non ordinata</strong> di elementi <strong>unici</strong> (senza duplicati).</p>
+<pre><code class="language-python"># List (può avere duplicati)
+my_list = [1, 2, 2, 3, 3, 3]
+print(my_list)  # [1, 2, 2, 3, 3, 3]
+
+# Set (rimuove automaticamente i duplicati)
+my_set = {1, 2, 2, 3, 3, 3}
+print(my_set)  # {1, 2, 3}
+</code></pre>
+<hr>
+<h2>📊 Set vs List vs Dict</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>List</th>
+<th>Set</th>
+<th>Dict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Duplicati</strong></td>
+<td>✅ Permessi</td>
+<td>❌ Automaticamente rimossi</td>
+<td>Chiavi uniche</td>
+</tr>
+<tr>
+<td><strong>Ordinato</strong></td>
+<td>✅ Mantiene ordine</td>
+<td>❌ Non ordinato</td>
+<td>✅ (da Python 3.7+)</td>
+</tr>
+<tr>
+<td><strong>Indici</strong></td>
+<td>✅ <code>list[0]</code></td>
+<td>❌ No indici</td>
+<td>✅ <code>dict[&quot;key&quot;]</code></td>
+</tr>
+<tr>
+<td><strong>Mutabile</strong></td>
+<td>✅ append, remove</td>
+<td>✅ add, remove</td>
+<td>✅ dict[k] = v</td>
+</tr>
+<tr>
+<td><strong>Membership test</strong></td>
+<td>O(n) lento</td>
+<td><strong>O(1) velocissimo</strong></td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🚀 Operazioni Base</h2>
+<h3>1. Creare un Set</h3>
+<pre><code class="language-python"># Metodo 1: Literal syntax
+set1 = {1, 2, 3}
+
+# Metodo 2: Da una lista (rimuove duplicati!)
+numbers = [1, 2, 2, 3, 3, 3]
+set2 = set(numbers)  # {1, 2, 3}
+
+# Metodo 3: Set vuoto (ATTENZIONE!)
+empty = set()  # ✅ Corretto
+# empty = {}   # ❌ SBAGLIATO! Questo crea un dict vuoto
+</code></pre>
+<h3>2. Aggiungere elementi</h3>
+<pre><code class="language-python">my_set = {1, 2, 3}
+
+# add() - aggiunge UN elemento
+my_set.add(4)
+print(my_set)  # {1, 2, 3, 4}
+
+my_set.add(2)  # Già esiste, ignorato
+print(my_set)  # {1, 2, 3, 4}
+
+# update() - aggiunge MULTIPLI elementi
+my_set.update([5, 6, 7])
+print(my_set)  # {1, 2, 3, 4, 5, 6, 7}
+</code></pre>
+<h3>3. Rimuovere elementi</h3>
+<pre><code class="language-python">my_set = {1, 2, 3, 4}
+
+# remove() - errore se elemento non esiste
+my_set.remove(3)
+print(my_set)  # {1, 2, 4}
+# my_set.remove(10)  # ❌ KeyError!
+
+# discard() - NO errore se elemento non esiste
+my_set.discard(10)  # Non fa nulla, nessun errore
+
+# pop() - rimuove elemento casuale
+element = my_set.pop()
+print(element)  # 1 o 2 o 4 (random!)
+
+# clear() - svuota tutto
+my_set.clear()
+print(my_set)  # set()
+</code></pre>
+<h3>4. Membership test (IMPORTANTE!)</h3>
+<pre><code class="language-python">my_set = {1, 2, 3, 4, 5}
+my_list = [1, 2, 3, 4, 5]
+
+# Con Set: O(1) - VELOCISSIMO
+print(3 in my_set)  # True - instant!
+
+# Con List: O(n) - LENTO (scorre tutta la lista)
+print(3 in my_list)  # True - deve cercare
+
+# Con 1 milione di elementi:
+# Set: 0.0001 secondi
+# List: 0.5 secondi (5000x più lento!)
+</code></pre>
+<hr>
+<h2>🎨 Operazioni Matematiche (come a scuola!)</h2>
+<pre><code class="language-python">set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
+
+# UNION (unione) - tutti gli elementi
+print(set_a | set_b)  # {1, 2, 3, 4, 5, 6}
+print(set_a.union(set_b))  # Stesso risultato
+
+# INTERSECTION (intersezione) - elementi in comune
+print(set_a &amp; set_b)  # {3, 4}
+print(set_a.intersection(set_b))  # Stesso risultato
+
+# DIFFERENCE (differenza) - in A ma non in B
+print(set_a - set_b)  # {1, 2}
+print(set_a.difference(set_b))  # Stesso risultato
+
+# SYMMETRIC DIFFERENCE - in A o B, ma non in entrambi
+print(set_a ^ set_b)  # {1, 2, 5, 6}
+print(set_a.symmetric_difference(set_b))  # Stesso risultato
+</code></pre>
+<hr>
+<h2>💡 Casi d&#39;uso reali (quando usare Set)</h2>
+<h3>Caso 1: Rimuovere duplicati da lista</h3>
+<pre><code class="language-python">numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+
+# Metodo brutto (loop)
+unique = []
+for num in numbers:
+    if num not in unique:
+        unique.append(num)
+
+# Metodo elegante (set)
+unique = list(set(numbers))  # [1, 2, 3, 4]
+</code></pre>
+<h3>Caso 2: Check &quot;già visto&quot; (tracking)</h3>
+<pre><code class="language-python">def find_pairs_sum_to_target(numbers, target):
+    seen = set()  # Track coppie già trovate
+    result = []
+    
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if numbers[i] + numbers[j] == target:
+                pair = (numbers[i], numbers[j])
+                if pair not in seen:  # O(1) - veloce!
+                    seen.add(pair)
+                    result.append(pair)
+    
+    return result
+</code></pre>
+<p><strong>Perché Set è meglio di List qui?</strong></p>
+<pre><code class="language-python"># Con List:
+if pair not in result:  # O(n) - deve cercare in tutta la lista
+
+# Con Set:
+if pair not in seen:    # O(1) - instant check!
+</code></pre>
+<h3>Caso 3: Trovare elementi comuni tra liste</h3>
+<pre><code class="language-python">list1 = [1, 2, 3, 4, 5]
+list2 = [4, 5, 6, 7, 8]
+
+# Metodo brutto
+common = [x for x in list1 if x in list2]  # O(n*m) - lento
+
+# Metodo elegante
+common = list(set(list1) &amp; set(list2))  # O(n+m) - veloce!
+print(common)  # [4, 5]
+</code></pre>
+<h3>Caso 4: Tag/Categories (user interests)</h3>
+<pre><code class="language-python"># User tags
+user1_interests = {&quot;python&quot;, &quot;javascript&quot;, &quot;ai&quot;, &quot;cinema&quot;}
+user2_interests = {&quot;javascript&quot;, &quot;java&quot;, &quot;cinema&quot;, &quot;gaming&quot;}
+
+# Interessi in comune
+common = user1_interests &amp; user2_interests
+print(common)  # {&quot;javascript&quot;, &quot;cinema&quot;}
+
+# Tutti gli interessi (recommendation system)
+all_interests = user1_interests | user2_interests
+print(all_interests)  # {&quot;python&quot;, &quot;javascript&quot;, &quot;ai&quot;, &quot;cinema&quot;, &quot;java&quot;, &quot;gaming&quot;}
+
+# Interessi unici del primo utente
+unique_to_user1 = user1_interests - user2_interests
+print(unique_to_user1)  # {&quot;python&quot;, &quot;ai&quot;}
+</code></pre>
+<hr>
+<h2>🆚 Confronto con JavaScript</h2>
+<pre><code class="language-javascript">// JavaScript
+const mySet = new Set([1, 2, 2, 3, 3]);
+console.log(mySet);  // Set {1, 2, 3}
+
+mySet.add(4);
+mySet.delete(2);
+console.log(mySet.has(3));  // true
+console.log(mySet.size);     // 3
+</code></pre>
+<pre><code class="language-python"># Python - quasi identico!
+my_set = {1, 2, 2, 3, 3}
+print(my_set)  # {1, 2, 3}
+
+my_set.add(4)
+my_set.remove(2)  # o discard(2)
+print(3 in my_set)  # True
+print(len(my_set))  # 3
+</code></pre>
+<p><strong>Differenze chiave:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>remove(x)</code></td>
+<td><code>delete(x)</code></td>
+</tr>
+<tr>
+<td><code>x in my_set</code></td>
+<td><code>mySet.has(x)</code></td>
+</tr>
+<tr>
+<td><code>len(my_set)</code></td>
+<td><code>mySet.size</code></td>
+</tr>
+<tr>
+<td><code>{1, 2, 3}</code></td>
+<td><code>new Set([1, 2, 3])</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>⚠️ Gotcha comuni</h2>
+<h3>1. Set vuoto</h3>
+<pre><code class="language-python">empty = {}       # ❌ Questo è un dict!
+empty = set()    # ✅ Questo è un set vuoto
+
+print(type({}))      # &lt;class &#39;dict&#39;&gt;
+print(type(set()))   # &lt;class &#39;set&#39;&gt;
+</code></pre>
+<h3>2. Set NON è ordinato (fino a Python 3.7+)</h3>
+<pre><code class="language-python">my_set = {3, 1, 2}
+print(my_set)  # Potrebbe stampare {1, 2, 3} o altro ordine
+# Non fare affidamento sull&#39;ordine!
+
+# Se ti serve ordine + unicità, usa:
+ordered_unique = list(dict.fromkeys([3, 1, 2, 1, 3]))
+# [3, 1, 2]
+</code></pre>
+<h3>3. Elementi devono essere immutabili (hashable)</h3>
+<pre><code class="language-python"># OK - tipi immutabili
+my_set = {1, 2, &quot;hello&quot;, (1, 2), True}
+
+# ERROR - tipi mutabili
+# my_set = {1, 2, [1, 2]}        # ❌ TypeError: unhashable type: &#39;list&#39;
+# my_set = {1, 2, {3, 4}}        # ❌ TypeError: unhashable type: &#39;set&#39;
+# my_set = {1, 2, {&quot;key&quot;: &quot;val&quot;}} # ❌ TypeError: unhashable type: &#39;dict&#39;
+</code></pre>
+<p><strong>Regola:</strong> Solo tipi <strong>immutabili</strong> (int, str, tuple, frozenset) possono stare in un set.</p>
+<hr>
+<h2>🎯 Quando usare Set vs List?</h2>
+<h3>Usa Set quando:</h3>
+<ul>
+<li>✅ <strong>Non vuoi duplicati</strong></li>
+<li>✅ <strong>Ordine non importa</strong></li>
+<li>✅ <strong>Fai molti <code>in</code> checks</strong> (membership test)</li>
+<li>✅ <strong>Vuoi operazioni matematiche</strong> (union, intersection)</li>
+<li>✅ <strong>Performance critica</strong> per lookup</li>
+</ul>
+<h3>Usa List quando:</h3>
+<ul>
+<li>✅ <strong>Ordine importa</strong></li>
+<li>✅ <strong>Vuoi duplicati</strong></li>
+<li>✅ <strong>Accesso per indice</strong> (<code>list[0]</code>)</li>
+<li>✅ <strong>Devi modificare elementi in posizioni specifiche</strong></li>
+<li>✅ <strong>Serve slicing</strong> (<code>list[1:3]</code>)</li>
+</ul>
+<hr>
+<h2>📊 Performance Comparison</h2>
+<pre><code class="language-python">import time
+
+# Setup
+big_list = list(range(1000000))
+big_set = set(range(1000000))
+
+# Test membership (cercare un elemento)
+start = time.time()
+999999 in big_list  # O(n) - worst case
+print(f&quot;List lookup: {time.time() - start:.4f}s&quot;)
+
+start = time.time()
+999999 in big_set   # O(1) - constant time
+print(f&quot;Set lookup: {time.time() - start:.4f}s&quot;)
+
+# Output tipico:
+# List lookup: 0.0089s
+# Set lookup: 0.0000s  (9000x più veloce!)
+</code></pre>
+<hr>
+<h2>🔥 Set Comprehension (bonus)</h2>
+<p>Come list comprehension, ma crea un set:</p>
+<pre><code class="language-python"># List comprehension
+squares_list = [x**2 for x in range(10)]
+print(squares_list)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# Set comprehension (note le graffe!)
+squares_set = {x**2 for x in range(10)}
+print(squares_set)  # {0, 1, 4, 9, 16, 25, 36, 49, 64, 81}
+
+# Rimuove automaticamente duplicati
+numbers = [1, 2, 2, 3, 3, 3]
+unique_doubled = {x * 2 for x in numbers}
+print(unique_doubled)  # {2, 4, 6}
+</code></pre>
+<hr>
+<h2>❄️ frozenset (Set Immutabile)</h2>
+<p><strong>frozenset</strong> è la versione <strong>immutabile</strong> del set. Una volta creato, NON puoi modificarlo.</p>
+<pre><code class="language-python"># Creare un frozenset
+frozen = frozenset([1, 2, 3, 4])
+print(frozen)  # frozenset({1, 2, 3, 4})
+
+# NON puoi modificarlo
+# frozen.add(5)     # ❌ AttributeError: &#39;frozenset&#39; object has no attribute &#39;add&#39;
+# frozen.remove(1)  # ❌ AttributeError: &#39;frozenset&#39; object has no attribute &#39;remove&#39;
+
+# Ma PUOI usare operazioni matematiche (creano nuovi frozenset)
+a = frozenset([1, 2, 3])
+b = frozenset([3, 4, 5])
+
+print(a | b)  # frozenset({1, 2, 3, 4, 5})
+print(a &amp; b)  # frozenset({3})
+print(a - b)  # frozenset({1, 2})
+</code></pre>
+<h3>Perché usare frozenset?</h3>
+<h4>1. Come chiave di un dizionario</h4>
+<p>Set normali NON possono essere chiavi di dict (perché mutabili), ma frozenset SÌ!</p>
+<pre><code class="language-python"># Set normale come chiave - ERROR
+# cache = {
+#     {1, 2, 3}: &quot;result_1&quot;  # ❌ TypeError: unhashable type: &#39;set&#39;
+# }
+
+# frozenset come chiave - OK
+cache = {
+    frozenset([1, 2, 3]): &quot;result_1&quot;,
+    frozenset([4, 5, 6]): &quot;result_2&quot;
+}
+
+# Uso reale: cache di coordinate
+visited_positions = {
+    frozenset([(0, 0), (1, 1), (2, 2)]): True,
+    frozenset([(0, 1), (1, 2)]): False
+}
+</code></pre>
+<h4>2. Come elemento di un set</h4>
+<p>Set normali NON possono contenere altri set, ma possono contenere frozenset!</p>
+<pre><code class="language-python"># Set di set - ERROR
+# set_of_sets = {
+#     {1, 2},      # ❌ TypeError: unhashable type: &#39;set&#39;
+#     {3, 4}
+# }
+
+# Set di frozenset - OK
+set_of_sets = {
+    frozenset([1, 2]),
+    frozenset([3, 4]),
+    frozenset([5, 6])
+}
+
+# Uso reale: gruppi di tag unici
+tag_combinations = {
+    frozenset([&quot;python&quot;, &quot;backend&quot;]),
+    frozenset([&quot;javascript&quot;, &quot;frontend&quot;]),
+    frozenset([&quot;python&quot;, &quot;ai&quot;])
+}
+</code></pre>
+<h3>Confronto set vs frozenset</h3>
+<pre><code class="language-python"># Set normale - mutabile
+normal_set = {1, 2, 3}
+normal_set.add(4)       # ✅ OK
+hash(normal_set)         # ❌ TypeError: unhashable type: &#39;set&#39;
+
+# frozenset - immutabile
+frozen_set = frozenset([1, 2, 3])
+# frozen_set.add(4)     # ❌ AttributeError
+hash(frozen_set)         # ✅ OK - ritorna un hash number
+
+# Questo significa che frozenset è &quot;hashable&quot;
+# e può essere usato dove serve un tipo immutabile
+</code></pre>
+<hr>
+<h2>📝 Quick Reference</h2>
+<pre><code class="language-python"># Creazione
+s = {1, 2, 3}
+s = set([1, 2, 3])
+s = set()  # vuoto
+
+# Aggiunta
+s.add(4)
+s.update([5, 6])
+
+# Rimozione
+s.remove(4)      # KeyError se non esiste
+s.discard(4)     # No error se non esiste
+s.pop()          # Rimuove elemento casuale
+s.clear()        # Svuota tutto
+
+# Check
+4 in s           # Membership test O(1)
+len(s)           # Numero elementi
+
+# Operazioni matematiche
+a | b            # Union
+a &amp; b            # Intersection
+a - b            # Difference
+a ^ b            # Symmetric difference
+
+# Metodi
+a.union(b)
+a.intersection(b)
+a.difference(b)
+a.symmetric_difference(b)
+a.issubset(b)
+a.issuperset(b)
+</code></pre>
+<hr>
+<h2>💪 Esercizio pratico</h2>
+<p>Prova questo codice per testare la tua comprensione:</p>
+<pre><code class="language-python"># Trova parole che appaiono in entrambe le frasi
+sentence1 = &quot;the quick brown fox jumps over the lazy dog&quot;
+sentence2 = &quot;the lazy dog sleeps under the warm sun&quot;
+
+words1 = set(sentence1.split())
+words2 = set(sentence2.split())
+
+# Parole in comune
+common = words1 &amp; words2
+print(f&quot;Common words: {common}&quot;)
+# Output: {&#39;lazy&#39;, &#39;dog&#39;, &#39;the&#39;}
+
+# Parole solo in sentence1
+unique1 = words1 - words2
+print(f&quot;Only in sentence 1: {unique1}&quot;)
+# Output: {&#39;brown&#39;, &#39;quick&#39;, &#39;over&#39;, &#39;jumps&#39;, &#39;fox&#39;}
+
+# Tutte le parole uniche
+all_words = words1 | words2
+print(f&quot;All unique words: {len(all_words)} words&quot;)
+</code></pre>
+<hr>
+<h2>🎓 Recap</h2>
+<p><strong>Set è perfetto per:</strong></p>
+<ul>
+<li>✅ Rimuovere duplicati velocemente</li>
+<li>✅ Check &quot;ho già visto questo?&quot; (tracking)</li>
+<li>✅ Operazioni matematiche su collezioni</li>
+<li>✅ Performance-critical membership tests</li>
+</ul>
+<p><strong>Ricorda sempre:</strong></p>
+<ul>
+<li><code>{}</code> è un dict, non un set!</li>
+<li>Set non ha ordine garantito</li>
+<li>Solo elementi immutabili (hashable)</li>
+<li>Membership test è O(1) vs O(n) delle liste</li>
+</ul>
+<p><strong>Next steps:</strong></p>
+<ul>
+<li>Quando incontri un problema con duplicati → pensa a Set</li>
+<li>Quando fai molti <code>in</code> checks → usa Set invece di List</li>
+<li>Quando serve union/intersection → Set operations</li>
+</ul>
+</body>
+</html>

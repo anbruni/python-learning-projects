@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>oop.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>Python OOP - Guida Completa</h1>
+<h2>🎯 Cos&#39;è OOP (Object-Oriented Programming)?</h2>
+<p><strong>Definizione:</strong> Paradigma di programmazione basato su <strong>oggetti</strong> che combinano dati (attributi) e comportamenti (metodi).</p>
+<p><strong>I 4 pilastri di OOP:</strong></p>
+<ol>
+<li><strong>Encapsulation</strong> (Incapsulamento): Nascondere dettagli interni</li>
+<li><strong>Inheritance</strong> (Ereditarietà): Riutilizzare codice tramite gerarchie</li>
+<li><strong>Polymorphism</strong> (Polimorfismo): Stessi metodi, comportamenti diversi</li>
+<li><strong>Abstraction</strong> (Astrazione): Semplificare complessità</li>
+</ol>
+<hr>
+<h2>📦 1. Classes &amp; Objects Basics</h2>
+<h3>Cos&#39;è una Class?</h3>
+<p>Una <strong>classe</strong> è un <strong>blueprint</strong> (progetto) per creare oggetti.</p>
+<pre><code class="language-python"># Definire una classe
+class Dog:
+    pass  # Classe vuota
+
+# Creare oggetti (istanze)
+dog1 = Dog()
+dog2 = Dog()
+
+print(type(dog1))  # &lt;class &#39;__main__.Dog&#39;&gt;
+</code></pre>
+<h3>Anatomy di una Class</h3>
+<pre><code class="language-python">class Dog:
+    # Class attribute (condiviso da tutte le istanze)
+    species = &quot;Canis familiaris&quot;
+    
+    # Constructor (metodo speciale)
+    def __init__(self, name, age):
+        # Instance attributes (specifici per ogni oggetto)
+        self.name = name
+        self.age = age
+    
+    # Instance method
+    def bark(self):
+        return f&quot;{self.name} says Woof!&quot;
+    
+    # Instance method
+    def get_info(self):
+        return f&quot;{self.name} is {self.age} years old&quot;
+
+# Creare istanze
+buddy = Dog(&quot;Buddy&quot;, 3)
+max_dog = Dog(&quot;Max&quot;, 5)
+
+# Usare metodi
+print(buddy.bark())        # &quot;Buddy says Woof!&quot;
+print(max_dog.get_info())  # &quot;Max is 5 years old&quot;
+
+# Accedere attributi
+print(buddy.name)          # &quot;Buddy&quot;
+print(Dog.species)         # &quot;Canis familiaris&quot;
+</code></pre>
+<hr>
+<h2>🔧 2. <code>__init__</code> e <code>self</code></h2>
+<h3><code>__init__</code> (Constructor)</h3>
+<p>Metodo speciale chiamato <strong>automaticamente</strong> quando crei un&#39;istanza.</p>
+<pre><code class="language-python">class User:
+    def __init__(self, username, email):
+        print(&quot;Constructor called!&quot;)
+        self.username = username
+        self.email = email
+
+user = User(&quot;alice&quot;, &quot;alice@example.com&quot;)
+# Output: &quot;Constructor called!&quot;
+print(user.username)  # &quot;alice&quot;
+</code></pre>
+<p><strong>IMPORTANTE:</strong> <code>__init__</code> <strong>NON è un constructor</strong> (tecnicamente Python usa <code>__new__</code>), ma si comporta come tale. È un <strong>initializer</strong>.</p>
+<h3><code>self</code> (riferimento all&#39;istanza corrente)</h3>
+<p><code>self</code> è come <code>this</code> in JavaScript, ma <strong>DEVI scriverlo esplicitamente</strong>.</p>
+<pre><code class="language-python">class Counter:
+    def __init__(self):
+        self.count = 0  # self.count = attributo dell&#39;istanza
+    
+    def increment(self):
+        self.count += 1  # Accesso a self.count
+    
+    def get_count(self):
+        return self.count
+
+counter = Counter()
+counter.increment()
+print(counter.get_count())  # 1
+</code></pre>
+<p><strong>Confronto con JavaScript:</strong></p>
+<pre><code class="language-javascript">// JavaScript
+class Counter {
+    constructor() {
+        this.count = 0;  // &#39;this&#39; implicito
+    }
+    
+    increment() {
+        this.count += 1;  // &#39;this&#39; implicito
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python
+class Counter:
+    def __init__(self):
+        self.count = 0  # &#39;self&#39; ESPLICITO
+    
+    def increment(self):
+        self.count += 1  # &#39;self&#39; ESPLICITO
+</code></pre>
+<hr>
+<h2>📊 3. Instance vs Class Attributes</h2>
+<h3>Instance Attributes (attributi di istanza)</h3>
+<p><strong>Specifici per ogni oggetto.</strong> Definiti in <code>__init__</code> con <code>self.</code>.</p>
+<pre><code class="language-python">class Person:
+    def __init__(self, name, age):
+        self.name = name  # Instance attribute
+        self.age = age    # Instance attribute
+
+alice = Person(&quot;Alice&quot;, 25)
+bob = Person(&quot;Bob&quot;, 30)
+
+print(alice.name)  # &quot;Alice&quot;
+print(bob.name)    # &quot;Bob&quot;  ← Diversi!
+</code></pre>
+<h3>Class Attributes (attributi di classe)</h3>
+<p><strong>Condivisi da TUTTE le istanze.</strong> Definiti a livello di classe.</p>
+<pre><code class="language-python">class Circle:
+    pi = 3.14159  # Class attribute (condiviso)
+    
+    def __init__(self, radius):
+        self.radius = radius  # Instance attribute
+    
+    def area(self):
+        return Circle.pi * self.radius ** 2
+
+c1 = Circle(5)
+c2 = Circle(10)
+
+# Class attribute accessibile da classe e istanze
+print(Circle.pi)  # 3.14159
+print(c1.pi)      # 3.14159
+print(c2.pi)      # 3.14159  ← Stesso valore per tutti!
+
+# Instance attribute diverso per ogni istanza
+print(c1.radius)  # 5
+print(c2.radius)  # 10  ← Diversi!
+</code></pre>
+<h3>Quando usare cosa?</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Tipo</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dati specifici oggetto</td>
+<td>Instance</td>
+<td><code>self.name</code>, <code>self.age</code></td>
+</tr>
+<tr>
+<td>Costanti condivise</td>
+<td>Class</td>
+<td><code>Circle.pi</code>, <code>MAX_SIZE</code></td>
+</tr>
+<tr>
+<td>Contatori globali</td>
+<td>Class</td>
+<td><code>total_users</code></td>
+</tr>
+<tr>
+<td>Config comune</td>
+<td>Class</td>
+<td><code>default_timeout</code></td>
+</tr>
+</tbody></table>
+<h3>Esempio pratico: Counter</h3>
+<pre><code class="language-python">class Student:
+    total_students = 0  # Class attribute (counter)
+    
+    def __init__(self, name):
+        self.name = name  # Instance attribute
+        Student.total_students += 1  # Incrementa counter
+    
+    @classmethod
+    def get_total(cls):
+        return cls.total_students
+
+s1 = Student(&quot;Alice&quot;)
+s2 = Student(&quot;Bob&quot;)
+s3 = Student(&quot;Charlie&quot;)
+
+print(Student.get_total())  # 3
+</code></pre>
+<hr>
+<h2>🔨 4. Methods: Instance, Class, Static</h2>
+<h3>Instance Methods (metodi di istanza)</h3>
+<p><strong>Default.</strong> Operano su dati dell&#39;istanza tramite <code>self</code>.</p>
+<pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.balance = balance
+    
+    # Instance method
+    def deposit(self, amount):
+        self.balance += amount
+        return self.balance
+
+account = BankAccount(100)
+account.deposit(50)
+print(account.balance)  # 150
+</code></pre>
+<h3>Class Methods (<code>@classmethod</code>)</h3>
+<p>Operano su <strong>dati della classe</strong>, non dell&#39;istanza. Ricevono <code>cls</code> invece di <code>self</code>.</p>
+<pre><code class="language-python">class Employee:
+    company_name = &quot;TechCorp&quot;
+    total_employees = 0
+    
+    def __init__(self, name):
+        self.name = name
+        Employee.total_employees += 1
+    
+    @classmethod
+    def get_company_info(cls):
+        return f&quot;{cls.company_name} has {cls.total_employees} employees&quot;
+    
+    @classmethod
+    def change_company_name(cls, new_name):
+        cls.company_name = new_name
+
+emp1 = Employee(&quot;Alice&quot;)
+emp2 = Employee(&quot;Bob&quot;)
+
+print(Employee.get_company_info())  # &quot;TechCorp has 2 employees&quot;
+Employee.change_company_name(&quot;NewCorp&quot;)
+print(Employee.company_name)  # &quot;NewCorp&quot;
+</code></pre>
+<p><strong>Use case comune: Alternative constructors</strong></p>
+<pre><code class="language-python">class Date:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+    
+    @classmethod
+    def from_string(cls, date_string):
+        # Alternative constructor da string
+        year, month, day = map(int, date_string.split(&#39;-&#39;))
+        return cls(year, month, day)
+    
+    @classmethod
+    def today(cls):
+        # Alternative constructor con data odierna
+        import datetime
+        today = datetime.date.today()
+        return cls(today.year, today.month, today.day)
+
+# Regular constructor
+date1 = Date(2024, 5, 3)
+
+# Alternative constructors
+date2 = Date.from_string(&quot;2024-05-03&quot;)
+date3 = Date.today()
+</code></pre>
+<h3>Static Methods (<code>@staticmethod</code>)</h3>
+<p><strong>NON ricevono né <code>self</code> né <code>cls</code>.</strong> Sono funzioni utility legate alla classe.</p>
+<pre><code class="language-python">class Math:
+    @staticmethod
+    def add(x, y):
+        return x + y
+    
+    @staticmethod
+    def is_even(n):
+        return n % 2 == 0
+
+# Chiamati dalla classe (no istanza necessaria)
+print(Math.add(5, 3))      # 8
+print(Math.is_even(4))     # True
+
+# Possono essere chiamati anche da istanza (ma raro)
+m = Math()
+print(m.add(10, 20))  # 30
+</code></pre>
+<h3>Confronto: Quando usare cosa?</h3>
+<pre><code class="language-python">class Example:
+    class_var = &quot;shared&quot;
+    
+    def __init__(self, instance_var):
+        self.instance_var = instance_var
+    
+    # Instance method: usa SELF (dati istanza)
+    def instance_method(self):
+        return f&quot;Instance: {self.instance_var}&quot;
+    
+    # Class method: usa CLS (dati classe)
+    @classmethod
+    def class_method(cls):
+        return f&quot;Class: {cls.class_var}&quot;
+    
+    # Static method: NO self, NO cls (utility function)
+    @staticmethod
+    def static_method(x):
+        return f&quot;Static: {x * 2}&quot;
+
+obj = Example(&quot;data&quot;)
+print(obj.instance_method())     # Needs instance
+print(Example.class_method())    # Can call from class
+print(Example.static_method(5))  # Pure utility function
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Metodo</th>
+<th>Riceve</th>
+<th>Accede a</th>
+<th>Quando usare</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Instance</td>
+<td><code>self</code></td>
+<td>Instance attributes</td>
+<td>Operazioni su dati oggetto</td>
+</tr>
+<tr>
+<td>Class</td>
+<td><code>cls</code></td>
+<td>Class attributes</td>
+<td>Alternative constructors, class-level ops</td>
+</tr>
+<tr>
+<td>Static</td>
+<td>Niente</td>
+<td>Niente (solo args)</td>
+<td>Utility functions</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🔐 5. Encapsulation &amp; Properties</h2>
+<h3>Encapsulation (Nascondere dati interni)</h3>
+<p>In Python, l&#39;encapsulation è <strong>convenzionale</strong>, non forzata dal linguaggio.</p>
+<h3>Convenzioni: <code>_</code> e <code>__</code></h3>
+<pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.public = &quot;Everyone can see&quot;
+        self._protected = &quot;Internal use (convention)&quot;
+        self.__private = &quot;Name mangling (rare)&quot;
+
+account = BankAccount(100)
+
+# Tutti accessibili (Python si fida di te!)
+print(account.public)      # ✅ OK
+print(account._protected)  # ⚠️ Funziona, ma convenzione dice &quot;don&#39;t touch&quot;
+print(account._BankAccount__private)  # ✅ Name mangling bypass
+</code></pre>
+<p><strong>Convenzione:</strong></p>
+<ul>
+<li><code>attribute</code> → Public</li>
+<li><code>_attribute</code> → &quot;Internal use&quot; (convenzione, non enforcement)</li>
+<li><code>__attribute</code> → Name mangling (rare, evita collisioni in ereditarietà)</li>
+</ul>
+<h3>Properties (<code>@property</code>)</h3>
+<p><strong>Property</strong> = metodo che si comporta come un attributo.</p>
+<pre><code class="language-python">class Temperature:
+    def __init__(self, celsius):
+        self._celsius = celsius  # &quot;Private&quot; attribute
+    
+    @property
+    def celsius(self):
+        &quot;&quot;&quot;Getter&quot;&quot;&quot;
+        return self._celsius
+    
+    @celsius.setter
+    def celsius(self, value):
+        &quot;&quot;&quot;Setter with validation&quot;&quot;&quot;
+        if value &lt; -273.15:
+            raise ValueError(&quot;Temperature below absolute zero!&quot;)
+        self._celsius = value
+    
+    @property
+    def fahrenheit(self):
+        &quot;&quot;&quot;Computed property&quot;&quot;&quot;
+        return self._celsius * 9/5 + 32
+    
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        self._celsius = (value - 32) * 5/9
+
+# Uso (sembra un attributo!)
+temp = Temperature(25)
+print(temp.celsius)     # 25 (chiama getter)
+print(temp.fahrenheit)  # 77.0 (computed)
+
+temp.celsius = 30       # Chiama setter
+print(temp.celsius)     # 30
+
+temp.fahrenheit = 86    # Converte automaticamente
+print(temp.celsius)     # 30
+
+# temp.celsius = -300   # ValueError!
+</code></pre>
+<p><strong>Vantaggi @property:</strong></p>
+<ul>
+<li>✅ Sintassi attributo (no parentesi)</li>
+<li>✅ Validazione nei setter</li>
+<li>✅ Computed values (fahrenheit calcolato da celsius)</li>
+<li>✅ Backward compatibility (puoi aggiungere logic senza cambiare API)</li>
+</ul>
+<h3>Confronto con JavaScript</h3>
+<pre><code class="language-javascript">// JavaScript (getter/setter)
+class Temperature {
+    constructor(celsius) {
+        this._celsius = celsius;
+    }
+    
+    get celsius() {
+        return this._celsius;
+    }
+    
+    set celsius(value) {
+        if (value &lt; -273.15) throw new Error(&quot;Too cold!&quot;);
+        this._celsius = value;
+    }
+}
+
+const temp = new Temperature(25);
+console.log(temp.celsius);  // 25
+temp.celsius = 30;          // Setter
+</code></pre>
+<p>Python properties sono simili a getter/setter JS!</p>
+<hr>
+<h2>🧬 6. Inheritance (Ereditarietà)</h2>
+<p><strong>Inheritance</strong> = una classe (child) eredita attributi/metodi da un&#39;altra (parent).</p>
+<h3>Basic Inheritance</h3>
+<pre><code class="language-python"># Parent class
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return f&quot;{self.name} makes a sound&quot;
+
+# Child class
+class Dog(Animal):  # ← Eredita da Animal
+    def bark(self):
+        return f&quot;{self.name} barks&quot;
+
+dog = Dog(&quot;Buddy&quot;)
+print(dog.speak())  # Ereditato da Animal
+print(dog.bark())   # Definito in Dog
+</code></pre>
+<h3><code>super()</code> - Chiamare metodi Parent</h3>
+<pre><code class="language-python">class Employee:
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+    
+    def get_info(self):
+        return f&quot;{self.name}: ${self.salary}&quot;
+
+class Manager(Employee):
+    def __init__(self, name, salary, department):
+        super().__init__(name, salary)  # ← Chiama __init__ parent
+        self.department = department
+    
+    def get_info(self):
+        parent_info = super().get_info()  # ← Chiama get_info parent
+        return f&quot;{parent_info}, Dept: {self.department}&quot;
+
+mgr = Manager(&quot;Alice&quot;, 80000, &quot;Sales&quot;)
+print(mgr.get_info())  # &quot;Alice: $80000, Dept: Sales&quot;
+</code></pre>
+<h3>Method Overriding</h3>
+<p>Child può <strong>sostituire</strong> metodi parent.</p>
+<pre><code class="language-python">class Animal:
+    def speak(self):
+        return &quot;Generic sound&quot;
+
+class Dog(Animal):
+    def speak(self):  # Override
+        return &quot;Woof!&quot;
+
+class Cat(Animal):
+    def speak(self):  # Override
+        return &quot;Meow!&quot;
+
+dog = Dog()
+cat = Cat()
+print(dog.speak())  # &quot;Woof!&quot;
+print(cat.speak())  # &quot;Meow!&quot;
+</code></pre>
+<h3>Multiple Inheritance (avanzato)</h3>
+<p>Python supporta eredità multipla (JavaScript no!).</p>
+<pre><code class="language-python">class Flyable:
+    def fly(self):
+        return &quot;Flying!&quot;
+
+class Swimmable:
+    def swim(self):
+        return &quot;Swimming!&quot;
+
+class Duck(Flyable, Swimmable):  # Eredita da entrambe
+    pass
+
+duck = Duck()
+print(duck.fly())   # &quot;Flying!&quot;
+print(duck.swim())  # &quot;Swimming!&quot;
+</code></pre>
+<p><strong>⚠️ Multiple inheritance è potente ma complesso.</strong> Usa con cautela.</p>
+<hr>
+<h2>🦆 7. Polymorphism (Polimorfismo)</h2>
+<p><strong>Polymorphism</strong> = stessi metodi, comportamenti diversi in base al tipo.</p>
+<h3>Duck Typing</h3>
+<p>&quot;If it walks like a duck and quacks like a duck, it&#39;s a duck.&quot;</p>
+<p>Python non controlla il tipo, controlla solo se il metodo esiste.</p>
+<pre><code class="language-python">class Dog:
+    def speak(self):
+        return &quot;Woof!&quot;
+
+class Cat:
+    def speak(self):
+        return &quot;Meow!&quot;
+
+class Car:
+    def drive(self):
+        return &quot;Vroom!&quot;
+
+# Funzione polimorfica
+def make_speak(animal):
+    return animal.speak()  # Chiama speak() su qualsiasi oggetto
+
+dog = Dog()
+cat = Cat()
+car = Car()
+
+print(make_speak(dog))  # &quot;Woof!&quot;
+print(make_speak(cat))  # &quot;Meow!&quot;
+# print(make_speak(car))  # AttributeError (no speak method)
+</code></pre>
+<p><strong>No type checking!</strong> Python si fida che l&#39;oggetto abbia il metodo.</p>
+<h3>Polymorphism con Inheritance</h3>
+<pre><code class="language-python">class Payment:
+    def process(self, amount):
+        raise NotImplementedError(&quot;Subclass must implement&quot;)
+
+class CreditCard(Payment):
+    def process(self, amount):
+        return f&quot;Charged ${amount} to credit card&quot;
+
+class PayPal(Payment):
+    def process(self, amount):
+        return f&quot;Sent ${amount} via PayPal&quot;
+
+class Bitcoin(Payment):
+    def process(self, amount):
+        return f&quot;Transferred {amount} BTC&quot;
+
+# Funzione polimorfica
+def checkout(payment_method, amount):
+    print(payment_method.process(amount))
+
+# Stesso codice, comportamenti diversi!
+checkout(CreditCard(), 100)  # Credit card
+checkout(PayPal(), 50)       # PayPal
+checkout(Bitcoin(), 0.5)     # Bitcoin
+</code></pre>
+<p><strong>Key:</strong> Tutte le classi hanno metodo <code>process()</code>, ma implementazioni diverse.</p>
+<hr>
+<h2>✨ 8. Magic Methods (Dunder Methods)</h2>
+<p><strong>Magic methods</strong> = metodi speciali con <code>__</code> che Python chiama automaticamente.</p>
+<h3>Metodi comuni</h3>
+<pre><code class="language-python">class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    # String representation (per utenti)
+    def __str__(self):
+        return f&quot;({self.x}, {self.y})&quot;
+    
+    # String representation (per developer)
+    def __repr__(self):
+        return f&quot;Vector2D({self.x}, {self.y})&quot;
+    
+    # Addition
+    def __add__(self, other):
+        return Vector2D(self.x + other.x, self.y + other.y)
+    
+    # Multiplication by scalar
+    def __mul__(self, scalar):
+        return Vector2D(self.x * scalar, self.y * scalar)
+    
+    # Equality
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+    
+    # Length
+    def __len__(self):
+        import math
+        return int(math.sqrt(self.x**2 + self.y**2))
+
+v1 = Vector2D(3, 4)
+v2 = Vector2D(1, 2)
+
+print(v1)           # (3, 4)  ← Chiama __str__
+print(repr(v1))     # Vector2D(3, 4)  ← Chiama __repr__
+print(v1 + v2)      # (4, 6)  ← Chiama __add__
+print(v1 * 2)       # (6, 8)  ← Chiama __mul__
+print(v1 == v2)     # False  ← Chiama __eq__
+print(len(v1))      # 5  ← Chiama __len__
+</code></pre>
+<h3>Magic Methods Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Metodo</th>
+<th>Operatore/Funzione</th>
+<th>Quando chiamato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__init__</code></td>
+<td>-</td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>__str__</code></td>
+<td><code>print()</code>, <code>str()</code></td>
+<td>String utente</td>
+</tr>
+<tr>
+<td><code>__repr__</code></td>
+<td><code>repr()</code></td>
+<td>String developer</td>
+</tr>
+<tr>
+<td><code>__len__</code></td>
+<td><code>len()</code></td>
+<td>Lunghezza</td>
+</tr>
+<tr>
+<td><code>__add__</code></td>
+<td><code>+</code></td>
+<td>Addizione</td>
+</tr>
+<tr>
+<td><code>__sub__</code></td>
+<td><code>-</code></td>
+<td>Sottrazione</td>
+</tr>
+<tr>
+<td><code>__mul__</code></td>
+<td><code>*</code></td>
+<td>Moltiplicazione</td>
+</tr>
+<tr>
+<td><code>__eq__</code></td>
+<td><code>==</code></td>
+<td>Uguaglianza</td>
+</tr>
+<tr>
+<td><code>__lt__</code></td>
+<td><code>&lt;</code></td>
+<td>Less than</td>
+</tr>
+<tr>
+<td><code>__gt__</code></td>
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td><code>__getitem__</code></td>
+<td><code>[]</code></td>
+<td>Accesso indice</td>
+</tr>
+<tr>
+<td><code>__setitem__</code></td>
+<td><code>[] =</code></td>
+<td>Set indice</td>
+</tr>
+<tr>
+<td><code>__call__</code></td>
+<td><code>()</code></td>
+<td>Chiamata come funzione</td>
+</tr>
+<tr>
+<td><code>__enter__/__exit__</code></td>
+<td><code>with</code></td>
+<td>Context manager</td>
+</tr>
+</tbody></table>
+<p><strong>Esempio pratico:</strong></p>
+<pre><code class="language-python">class ShoppingCart:
+    def __init__(self):
+        self.items = []
+    
+    def add(self, item, price):
+        self.items.append((item, price))
+    
+    def __len__(self):
+        return len(self.items)
+    
+    def __getitem__(self, index):
+        return self.items[index]
+    
+    def __str__(self):
+        total = sum(price for _, price in self.items)
+        return f&quot;Cart with {len(self)} items, total: ${total}&quot;
+
+cart = ShoppingCart()
+cart.add(&quot;Apple&quot;, 1.5)
+cart.add(&quot;Banana&quot;, 0.5)
+
+print(len(cart))     # 2  ← __len__
+print(cart[0])       # (&#39;Apple&#39;, 1.5)  ← __getitem__
+print(cart)          # Cart with 2 items, total: $2.0  ← __str__
+</code></pre>
+<hr>
+<h2>🏗️ 9. Composition vs Inheritance</h2>
+<h3>&quot;Prefer composition over inheritance&quot;</h3>
+<p><strong>Inheritance</strong> = &quot;IS-A&quot; relationship<br><strong>Composition</strong> = &quot;HAS-A&quot; relationship</p>
+<h3>Inheritance (IS-A)</h3>
+<pre><code class="language-python">class Animal:
+    def eat(self):
+        return &quot;Eating...&quot;
+
+class Dog(Animal):  # Dog IS-A Animal
+    def bark(self):
+        return &quot;Woof!&quot;
+
+dog = Dog()
+dog.eat()   # Inherited
+dog.bark()  # Own method
+</code></pre>
+<h3>Composition (HAS-A)</h3>
+<pre><code class="language-python">class Engine:
+    def __init__(self, horsepower):
+        self.horsepower = horsepower
+    
+    def start(self):
+        return f&quot;Engine with {self.horsepower}hp started&quot;
+
+class Car:
+    def __init__(self, engine_hp):
+        self.engine = Engine(engine_hp)  # Car HAS-A Engine
+    
+    def start(self):
+        return self.engine.start()
+
+car = Car(200)
+print(car.start())  # Delegated to engine
+</code></pre>
+<h3>Quando usare Composition?</h3>
+<p>✅ <strong>Composition quando:</strong></p>
+<ul>
+<li>&quot;HAS-A&quot; relationship (Car HAS Engine)</li>
+<li>Vuoi flessibilità (swap components)</li>
+<li>Multiple unrelated behaviors</li>
+</ul>
+<p>❌ <strong>Inheritance quando:</strong></p>
+<ul>
+<li>&quot;IS-A&quot; relationship (Dog IS Animal)</li>
+<li>Chiara gerarchia</li>
+<li>Vuoi polymorphism</li>
+</ul>
+<p><strong>Esempio: Car con Composition</strong></p>
+<pre><code class="language-python">class Engine:
+    def start(self):
+        return &quot;Engine started&quot;
+
+class Wheel:
+    def rotate(self):
+        return &quot;Wheel rotating&quot;
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()       # HAS-A Engine
+        self.wheels = [Wheel() for _ in range(4)]  # HAS 4 Wheels
+    
+    def start(self):
+        return self.engine.start()
+    
+    def drive(self):
+        results = [wheel.rotate() for wheel in self.wheels]
+        return f&quot;Driving: {results}&quot;
+
+car = Car()
+print(car.start())  # &quot;Engine started&quot;
+print(car.drive())  # &quot;Driving: [...]&quot;
+</code></pre>
+<hr>
+<h2>🎭 10. Abstract Base Classes (ABC)</h2>
+<p><strong>Abstract class</strong> = classe che non può essere istanziata, serve come template.</p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Shape(ABC):  # Abstract class
+    @abstractmethod
+    def area(self):
+        &quot;&quot;&quot;Must be implemented by subclasses&quot;&quot;&quot;
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        &quot;&quot;&quot;Must be implemented by subclasses&quot;&quot;&quot;
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return 3.14159 * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * 3.14159 * self.radius
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+# shape = Shape()  # ❌ TypeError: Can&#39;t instantiate abstract class
+
+circle = Circle(5)
+print(circle.area())  # 78.54
+
+rectangle = Rectangle(4, 6)
+print(rectangle.perimeter())  # 20
+
+# Polymorphism
+def print_shape_info(shape):
+    print(f&quot;Area: {shape.area()}, Perimeter: {shape.perimeter()}&quot;)
+
+print_shape_info(circle)
+print_shape_info(rectangle)
+</code></pre>
+<p><strong>Quando usare ABC:</strong></p>
+<ul>
+<li>✅ Vuoi forzare child classes a implementare metodi</li>
+<li>✅ Vuoi creare interfacce/contratti</li>
+<li>✅ Framework/library design</li>
+</ul>
+<hr>
+<h2>🆚 11. Python OOP vs JavaScript OOP</h2>
+<h3>Syntax Comparison</h3>
+<pre><code class="language-javascript">// JavaScript (ES6)
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    
+    speak() {
+        console.log(`${this.name} makes a sound`);
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name);
+        this.breed = breed;
+    }
+    
+    speak() {
+        console.log(`${this.name} barks`);
+    }
+}
+
+const dog = new Dog(&quot;Buddy&quot;, &quot;Golden&quot;);
+dog.speak();
+</code></pre>
+<pre><code class="language-python"># Python
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        print(f&quot;{self.name} makes a sound&quot;)
+
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name)
+        self.breed = breed
+    
+    def speak(self):
+        print(f&quot;{self.name} barks&quot;)
+
+dog = Dog(&quot;Buddy&quot;, &quot;Golden&quot;)
+dog.speak()
+</code></pre>
+<h3>Key Differences</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Constructor</td>
+<td><code>__init__(self)</code></td>
+<td><code>constructor()</code></td>
+</tr>
+<tr>
+<td>Self reference</td>
+<td><code>self</code> (explicit)</td>
+<td><code>this</code> (implicit)</td>
+</tr>
+<tr>
+<td>Inheritance</td>
+<td><code>class Child(Parent)</code></td>
+<td><code>class Child extends Parent</code></td>
+</tr>
+<tr>
+<td>Super</td>
+<td><code>super().__init__()</code></td>
+<td><code>super()</code></td>
+</tr>
+<tr>
+<td>Private</td>
+<td><code>_attr</code> (convention)</td>
+<td><code>#attr</code> (enforced)</td>
+</tr>
+<tr>
+<td>Static method</td>
+<td><code>@staticmethod</code></td>
+<td><code>static method()</code></td>
+</tr>
+<tr>
+<td>Class method</td>
+<td><code>@classmethod</code></td>
+<td>No equivalent</td>
+</tr>
+<tr>
+<td>Properties</td>
+<td><code>@property</code></td>
+<td><code>get/set</code></td>
+</tr>
+<tr>
+<td>Multiple inheritance</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td>Duck typing</td>
+<td>✅ Yes</td>
+<td>❌ No (TypeScript helps)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>⚠️ 12. Common Gotchas</h2>
+<h3>1. Mutable Default Arguments</h3>
+<pre><code class="language-python"># ❌ SBAGLIATO
+class MyClass:
+    def __init__(self, items=[]):  # ❌ Lista condivisa!
+        self.items = items
+
+obj1 = MyClass()
+obj2 = MyClass()
+obj1.items.append(1)
+print(obj2.items)  # [1] ← Condivisa!
+
+# ✅ CORRETTO
+class MyClass:
+    def __init__(self, items=None):
+        self.items = items if items is not None else []
+
+obj1 = MyClass()
+obj2 = MyClass()
+obj1.items.append(1)
+print(obj2.items)  # [] ← Separata!
+</code></pre>
+<h3>2. Forgetting <code>self</code></h3>
+<pre><code class="language-python"># ❌ SBAGLIATO
+class Counter:
+    def __init__(self):
+        count = 0  # ❌ Locale, non self.count!
+    
+    def increment(self):
+        self.count += 1  # AttributeError!
+
+# ✅ CORRETTO
+class Counter:
+    def __init__(self):
+        self.count = 0  # ✅ Instance attribute
+    
+    def increment(self):
+        self.count += 1
+</code></pre>
+<h3>3. Shadowing Class Attributes</h3>
+<pre><code class="language-python">class MyClass:
+    shared = []  # Class attribute
+    
+    def add(self, item):
+        self.shared.append(item)  # Modifica class attribute!
+
+obj1 = MyClass()
+obj2 = MyClass()
+obj1.add(1)
+print(obj2.shared)  # [1] ← Condiviso!
+
+# Soluzione: usa instance attribute
+class MyClass:
+    def __init__(self):
+        self.items = []  # Instance attribute
+</code></pre>
+<h3>4. Using <code>__</code> Unnecessarily</h3>
+<pre><code class="language-python"># ❌ Overkill
+class User:
+    def __init__(self, name):
+        self.__name = name  # Name mangling non necessario
+
+# ✅ Sufficiente
+class User:
+    def __init__(self, name):
+        self._name = name  # Convenzione basta
+</code></pre>
+<hr>
+<h2>📝 Best Practices</h2>
+<h3>✅ DO:</h3>
+<pre><code class="language-python"># 1. Usa nomi descrittivi
+class BankAccount:  # ✅ Chiaro
+    pass
+
+# 2. Single Responsibility Principle
+class User:
+    def save_to_db(self):  # ❌ User should not handle DB
+        pass
+
+class UserRepository:
+    def save(self, user):  # ✅ Separato
+        pass
+
+# 3. Usa @property per computed values
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    
+    @property
+    def area(self):  # ✅ Computed on-the-fly
+        return 3.14159 * self.radius ** 2
+
+# 4. Usa __str__ e __repr__
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return f&quot;({self.x}, {self.y})&quot;
+    
+    def __repr__(self):
+        return f&quot;Point({self.x}, {self.y})&quot;
+
+# 5. Prefer composition over inheritance (quando ha senso)
+</code></pre>
+<h3>❌ DON&#39;T:</h3>
+<pre><code class="language-python"># 1. Non creare God classes (troppo responsabilità)
+class Application:  # ❌ Fa troppo
+    def connect_db(self): pass
+    def send_email(self): pass
+    def render_ui(self): pass
+    def process_payment(self): pass
+
+# 2. Non abusare di inheritance
+class Button(Widget, Clickable, Draggable, Resizable):  # ❌ Troppo!
+    pass
+
+# 3. Non usare __name per tutto
+class MyClass:
+    def __init__(self):
+        self.__x = 1  # ❌ Overkill
+        self.__y = 2  # ❌ Overkill
+
+# 4. Non dimenticare super() in __init__
+class Child(Parent):
+    def __init__(self, x):
+        # super().__init__()  # ❌ Dimenticato!
+        self.x = x
+</code></pre>
+<hr>
+<h2>📚 Quick Reference</h2>
+<pre><code class="language-python"># Class definition
+class MyClass:
+    class_attribute = &quot;shared&quot;
+    
+    def __init__(self, value):
+        self.instance_attribute = value
+    
+    def instance_method(self):
+        return self.instance_attribute
+    
+    @classmethod
+    def class_method(cls):
+        return cls.class_attribute
+    
+    @staticmethod
+    def static_method(x):
+        return x * 2
+    
+    @property
+    def computed(self):
+        return self.instance_attribute * 2
+
+# Inheritance
+class Child(Parent):
+    def __init__(self, x):
+        super().__init__(x)
+    
+    def method(self):
+        super().method()  # Call parent
+
+# Magic methods
+def __str__(self): return &quot;string&quot;
+def __repr__(self): return &quot;repr&quot;
+def __eq__(self, other): return True
+def __add__(self, other): return result
+
+# Abstract class
+from abc import ABC, abstractmethod
+class AbstractClass(ABC):
+    @abstractmethod
+    def must_implement(self):
+        pass
+</code></pre>
+<hr>
+<h2>🎓 Recap</h2>
+<p><strong>Fondamentali:</strong></p>
+<ul>
+<li>Classes &amp; Objects (blueprint → instances)</li>
+<li><code>__init__</code> e <code>self</code></li>
+<li>Instance vs Class attributes</li>
+<li>Instance/Class/Static methods</li>
+<li>Encapsulation (<code>_private</code>, <code>@property</code>)</li>
+<li>Inheritance &amp; <code>super()</code></li>
+<li>Polymorphism (duck typing)</li>
+<li>Magic methods (<code>__str__</code>, <code>__add__</code>, etc.)</li>
+</ul>
+<p><strong>Patterns:</strong></p>
+<ul>
+<li>Composition over inheritance (quando appropriato)</li>
+<li>Abstract Base Classes (interfacce)</li>
+<li>Properties per computed values</li>
+<li>Class methods per alternative constructors</li>
+</ul>
+<p><strong>Prossimi passi:</strong></p>
+<ul>
+<li>Pratica con esercizi OOP (Exercise 7-15)</li>
+<li>Leggi codebases altrui per vedere pattern</li>
+<li>Progetta classi per progetti reali</li>
+<li>Evita over-engineering (KISS principle)</li>
+</ul>
+</body>
+</html>
