@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>functions.md</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 2rem; line-height: 1.8; color: #333; }
+    h1,h2,h3,h4,h5,h6 { color: #111; margin: 1.5rem 0 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid #ddd; padding-bottom: 0.3rem; }
+    h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+    a { color: #0366d6; }
+    code { background: #f6f8fa; padding: 0.1em 0.4em; border-radius: 3px; font-family: monospace; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #aaa; padding: 0.5rem 1rem; color: #555; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th,td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; }
+    th { background: #f3f3f3; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body><h1>Functions in Python</h1>
+<blockquote>
+<p>Modern, practical guide focused on real-world usage (APIs, data processing, backend development)</p>
+</blockquote>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#function-basics">Function Basics</a></li>
+<li><a href="#parameters--arguments">Parameters &amp; Arguments</a></li>
+<li><a href="#type-hints-modern-python">Type Hints (Modern Python)</a></li>
+<li><a href="#args-and-kwargs">*args and **kwargs</a></li>
+<li><a href="#scope--variables">Scope &amp; Variables</a></li>
+<li><a href="#lambda-functions">Lambda Functions</a></li>
+<li><a href="#higher-order-functions">Higher-Order Functions</a></li>
+<li><a href="#decorators-essential-for-fastapi">Decorators (Essential for FastAPI)</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#common-patterns">Common Patterns</a></li>
+</ol>
+<hr>
+<h2>Function Basics</h2>
+<h3>Definition and Calling</h3>
+<pre><code class="language-python"># Basic function
+def greet(name):
+    return f&quot;Hello, {name}!&quot;
+
+result = greet(&quot;Andrea&quot;)  # &quot;Hello, Andrea!&quot;
+</code></pre>
+<p><strong>JS Comparison:</strong></p>
+<pre><code class="language-javascript">// JavaScript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+// Python uses &#39;def&#39;, no curly braces, indentation matters
+</code></pre>
+<h3>Return Values</h3>
+<pre><code class="language-python"># Multiple returns
+def get_user_status(age):
+    if age &lt; 18:
+        return &quot;minor&quot;
+    elif age &lt; 65:
+        return &quot;adult&quot;
+    else:
+        return &quot;senior&quot;
+
+# Multiple values (returns tuple)
+def get_coordinates():
+    return 10, 20  # same as return (10, 20)
+
+x, y = get_coordinates()  # unpacking
+</code></pre>
+<p><strong>Key Point:</strong> Functions without explicit <code>return</code> return <code>None</code> (like <code>undefined</code> in JS).</p>
+<hr>
+<h2>Parameters &amp; Arguments</h2>
+<h3>Positional vs Keyword Arguments</h3>
+<pre><code class="language-python">def create_user(name, age, city):
+    return {&quot;name&quot;: name, &quot;age&quot;: age, &quot;city&quot;: city}
+
+# Positional (order matters)
+user1 = create_user(&quot;Andrea&quot;, 30, &quot;Milan&quot;)
+
+# Keyword (order doesn&#39;t matter)
+user2 = create_user(city=&quot;Milan&quot;, name=&quot;Andrea&quot;, age=30)
+
+# Mixed (positional first, then keyword)
+user3 = create_user(&quot;Andrea&quot;, age=30, city=&quot;Milan&quot;)
+</code></pre>
+<h3>Default Parameters</h3>
+<pre><code class="language-python">def fetch_data(url, timeout=30, retries=3):
+    # timeout and retries have defaults
+    pass
+
+fetch_data(&quot;https://api.example.com&quot;)  # uses defaults
+fetch_data(&quot;https://api.example.com&quot;, timeout=60)  # override one
+</code></pre>
+<p><strong>⚠️ Mutable Default Trap:</strong></p>
+<pre><code class="language-python"># ❌ BAD - same list reused
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+
+# ✅ GOOD - create new list each time
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+</code></pre>
+<hr>
+<h2>Type Hints (Modern Python)</h2>
+<blockquote>
+<p>Essential for FastAPI, modern codebases, and IDE autocomplete</p>
+</blockquote>
+<h3>Basic Type Hints</h3>
+<pre><code class="language-python">def calculate_total(price: float, quantity: int) -&gt; float:
+    &quot;&quot;&quot;Type hints help IDEs and catch bugs early.&quot;&quot;&quot;
+    return price * quantity
+
+# IDE knows the types and can autocomplete
+total = calculate_total(19.99, 3)  # float
+</code></pre>
+<h3>Complex Types</h3>
+<pre><code class="language-python">from typing import List, Dict, Optional, Union
+
+# List of strings
+def get_tags() -&gt; List[str]:
+    return [&quot;python&quot;, &quot;fastapi&quot;, &quot;api&quot;]
+
+# Dictionary
+def get_user() -&gt; Dict[str, any]:
+    return {&quot;name&quot;: &quot;Andrea&quot;, &quot;age&quot;: 30}
+
+# Optional (can be None)
+def find_user(user_id: int) -&gt; Optional[Dict]:
+    # returns Dict or None
+    return None
+
+# Union (multiple types)
+def process_id(user_id: Union[int, str]) -&gt; str:
+    return str(user_id)
+</code></pre>
+<h3>Why Type Hints Matter</h3>
+<pre><code class="language-python"># FastAPI automatically validates types!
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(&quot;/users/{user_id}&quot;)
+def get_user(user_id: int) -&gt; Dict[str, any]:
+    # FastAPI converts user_id to int automatically
+    # Returns 422 error if not a valid int
+    return {&quot;id&quot;: user_id, &quot;name&quot;: &quot;Andrea&quot;}
+</code></pre>
+<p><strong>Use type hints for:</strong></p>
+<ul>
+<li>✅ Function signatures (parameters and return)</li>
+<li>✅ FastAPI route handlers</li>
+<li>✅ Data processing pipelines</li>
+<li>❌ Not needed for quick scripts/prototypes</li>
+</ul>
+<hr>
+<h2>*args and **kwargs</h2>
+<blockquote>
+<p>Flexible functions that accept variable arguments</p>
+</blockquote>
+<h3>*args - Variable Positional Arguments</h3>
+<pre><code class="language-python">def calculate_average(*numbers):
+    &quot;&quot;&quot;Accepts any number of arguments.&quot;&quot;&quot;
+    return sum(numbers) / len(numbers)
+
+avg = calculate_average(10, 20, 30)  # 20.0
+avg = calculate_average(5, 15)       # 10.0
+</code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li><code>*numbers</code> collects all positional arguments into a <strong>tuple</strong></li>
+<li>Name doesn&#39;t have to be &quot;args&quot; (can be <code>*values</code>, <code>*items</code>, etc.)</li>
+</ul>
+<p><strong>Real-world example:</strong></p>
+<pre><code class="language-python">def log_message(level: str, *messages):
+    &quot;&quot;&quot;Logger that accepts multiple messages.&quot;&quot;&quot;
+    combined = &quot; &quot;.join(str(msg) for msg in messages)
+    print(f&quot;[{level}] {combined}&quot;)
+
+log_message(&quot;ERROR&quot;, &quot;Database&quot;, &quot;connection&quot;, &quot;failed&quot;)
+# [ERROR] Database connection failed
+</code></pre>
+<h3>**kwargs - Variable Keyword Arguments</h3>
+<pre><code class="language-python">def create_api_request(**params):
+    &quot;&quot;&quot;Accepts any keyword arguments.&quot;&quot;&quot;
+    return {&quot;url&quot;: &quot;/api/users&quot;, &quot;params&quot;: params}
+
+req = create_api_request(page=1, limit=10, sort=&quot;name&quot;)
+# {&#39;url&#39;: &#39;/api/users&#39;, &#39;params&#39;: {&#39;page&#39;: 1, &#39;limit&#39;: 10, &#39;sort&#39;: &#39;name&#39;}}
+</code></pre>
+<p><strong>What happens:</strong></p>
+<ul>
+<li><code>**params</code> collects all keyword arguments into a <strong>dict</strong></li>
+<li>Name doesn&#39;t have to be &quot;kwargs&quot; (can be <code>**options</code>, <code>**config</code>, etc.)</li>
+</ul>
+<p><strong>Real-world example (FastAPI pattern):</strong></p>
+<pre><code class="language-python">def build_query(table: str, **filters):
+    &quot;&quot;&quot;Build SQL WHERE clause from filters.&quot;&quot;&quot;
+    conditions = [f&quot;{key} = &#39;{value}&#39;&quot; for key, value in filters.items()]
+    where = &quot; AND &quot;.join(conditions)
+    return f&quot;SELECT * FROM {table} WHERE {where}&quot;
+
+query = build_query(&quot;users&quot;, city=&quot;Milan&quot;, age=30)
+# &quot;SELECT * FROM users WHERE city = &#39;Milan&#39; AND age = &#39;30&#39;&quot;
+</code></pre>
+<h3>Combining All Parameter Types</h3>
+<pre><code class="language-python">def api_call(endpoint: str, *ids, method=&quot;GET&quot;, **params):
+    &quot;&quot;&quot;
+    endpoint: required positional
+    *ids: optional positional (tuple)
+    method: keyword with default
+    **params: optional keyword (dict)
+    &quot;&quot;&quot;
+    print(f&quot;{method} {endpoint}&quot;)
+    print(f&quot;IDs: {ids}&quot;)
+    print(f&quot;Params: {params}&quot;)
+
+api_call(&quot;/users&quot;, 1, 2, 3, method=&quot;POST&quot;, limit=10, page=1)
+# POST /users
+# IDs: (1, 2, 3)
+# Params: {&#39;limit&#39;: 10, &#39;page&#39;: 1}
+</code></pre>
+<p><strong>Order matters:</strong></p>
+<ol>
+<li>Positional parameters</li>
+<li><code>*args</code></li>
+<li>Keyword parameters with defaults</li>
+<li><code>**kwargs</code></li>
+</ol>
+<hr>
+<h2>Scope &amp; Variables</h2>
+<h3>Local vs Global</h3>
+<pre><code class="language-python">count = 0  # global variable
+
+def increment():
+    count = count + 1  # ❌ ERROR: UnboundLocalError
+    return count
+
+# Fix 1: Use &#39;global&#39; keyword
+count = 0
+def increment():
+    global count
+    count = count + 1
+    return count
+
+# Fix 2: Return new value (better practice)
+def increment(count):
+    return count + 1
+
+count = increment(count)  # explicit state change
+</code></pre>
+<p><strong>⚠️ Avoid global variables:</strong></p>
+<ul>
+<li>Hard to test</li>
+<li>Hard to debug</li>
+<li>Not thread-safe</li>
+<li>Better: pass state as parameters or use classes</li>
+</ul>
+<h3>Nonlocal (Nested Functions)</h3>
+<pre><code class="language-python">def outer():
+    count = 0
+    
+    def increment():
+        nonlocal count  # modifies outer&#39;s count
+        count += 1
+        return count
+    
+    return increment
+
+counter = outer()
+print(counter())  # 1
+print(counter())  # 2
+print(counter())  # 3
+</code></pre>
+<p><strong>When you&#39;ll use this:</strong></p>
+<ul>
+<li>Closures</li>
+<li>Decorators</li>
+<li>Factory functions</li>
+</ul>
+<p><strong>JS Comparison:</strong></p>
+<pre><code class="language-javascript">// JavaScript has similar closure behavior
+function outer() {
+    let count = 0;
+    return function increment() {
+        count++;  // automatically captures count
+        return count;
+    }
+}
+</code></pre>
+<hr>
+<h2>Lambda Functions</h2>
+<blockquote>
+<p>Anonymous functions for simple operations</p>
+</blockquote>
+<h3>Basic Syntax</h3>
+<pre><code class="language-python"># Regular function
+def square(x):
+    return x ** 2
+
+# Lambda (one-liner)
+square = lambda x: x ** 2
+
+result = square(5)  # 25
+</code></pre>
+<h3>Practical Use Cases</h3>
+<p><strong>1. Sorting with custom key:</strong></p>
+<pre><code class="language-python">users = [
+    {&quot;name&quot;: &quot;Andrea&quot;, &quot;age&quot;: 30},
+    {&quot;name&quot;: &quot;Maria&quot;, &quot;age&quot;: 25},
+    {&quot;name&quot;: &quot;Luca&quot;, &quot;age&quot;: 35}
+]
+
+# Sort by age
+sorted_users = sorted(users, key=lambda u: u[&quot;age&quot;])
+# [{&#39;name&#39;: &#39;Maria&#39;, &#39;age&#39;: 25}, ...]
+</code></pre>
+<p><strong>2. Filtering:</strong></p>
+<pre><code class="language-python">numbers = [1, 2, 3, 4, 5, 6]
+
+# Filter even numbers
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+# [2, 4, 6]
+</code></pre>
+<p><strong>3. Mapping:</strong></p>
+<pre><code class="language-python">prices = [10, 20, 30]
+
+# Add tax (22%)
+with_tax = list(map(lambda p: p * 1.22, prices))
+# [12.2, 24.4, 36.6]
+</code></pre>
+<h3>When NOT to Use Lambda</h3>
+<pre><code class="language-python"># ❌ BAD - too complex
+process = lambda x: x.strip().lower() if x else &quot;&quot;
+
+# ✅ GOOD - use regular function with name
+def clean_text(text):
+    return text.strip().lower() if text else &quot;&quot;
+</code></pre>
+<p><strong>Rule of thumb:</strong></p>
+<ul>
+<li>✅ Lambdas for simple, one-line operations</li>
+<li>✅ Used as arguments to other functions (sort, filter, map)</li>
+<li>❌ If you need multiple lines → regular function</li>
+<li>❌ If logic is complex → regular function with docstring</li>
+</ul>
+<hr>
+<h2>Higher-Order Functions</h2>
+<blockquote>
+<p>Functions that take other functions as arguments or return functions</p>
+</blockquote>
+<h3>Functions as Arguments</h3>
+<pre><code class="language-python">def apply_operation(numbers: List[int], operation):
+    &quot;&quot;&quot;Apply operation to each number.&quot;&quot;&quot;
+    return [operation(n) for n in numbers]
+
+# Use with lambda
+doubled = apply_operation([1, 2, 3], lambda x: x * 2)
+# [2, 4, 6]
+
+# Use with regular function
+def square(x):
+    return x ** 2
+
+squared = apply_operation([1, 2, 3], square)
+# [1, 4, 9]
+</code></pre>
+<h3>Common Built-in Higher-Order Functions</h3>
+<p><strong>map() - Transform each element:</strong></p>
+<pre><code class="language-python">names = [&quot;andrea&quot;, &quot;maria&quot;, &quot;luca&quot;]
+capitalized = list(map(str.capitalize, names))
+# [&quot;Andrea&quot;, &quot;Maria&quot;, &quot;Luca&quot;]
+
+# Same with list comprehension (often preferred)
+capitalized = [name.capitalize() for name in names]
+</code></pre>
+<p><strong>filter() - Keep elements that match condition:</strong></p>
+<pre><code class="language-python">numbers = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+# [2, 4, 6]
+
+# Same with list comprehension (often preferred)
+evens = [x for x in numbers if x % 2 == 0]
+</code></pre>
+<p><strong>sorted() with key:</strong></p>
+<pre><code class="language-python">users = [
+    {&quot;name&quot;: &quot;Andrea&quot;, &quot;score&quot;: 85},
+    {&quot;name&quot;: &quot;Maria&quot;, &quot;score&quot;: 92}
+]
+
+# Sort by score (descending)
+top_users = sorted(users, key=lambda u: u[&quot;score&quot;], reverse=True)
+</code></pre>
+<h3>Functions Returning Functions (Factory Pattern)</h3>
+<pre><code class="language-python">def make_multiplier(factor: int):
+    &quot;&quot;&quot;Factory that creates multiplier functions.&quot;&quot;&quot;
+    def multiply(x: int) -&gt; int:
+        return x * factor
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(5))  # 10
+print(triple(5))  # 15
+</code></pre>
+<p><strong>Real-world example: API client factory:</strong></p>
+<pre><code class="language-python">def create_api_client(base_url: str, api_key: str):
+    &quot;&quot;&quot;Factory for API client with specific base URL and key.&quot;&quot;&quot;
+    def make_request(endpoint: str, **params):
+        url = f&quot;{base_url}{endpoint}&quot;
+        headers = {&quot;Authorization&quot;: f&quot;Bearer {api_key}&quot;}
+        # ... make request
+        return {&quot;url&quot;: url, &quot;headers&quot;: headers, &quot;params&quot;: params}
+    
+    return make_request
+
+# Create specific client
+tmdb_client = create_api_client(&quot;https://api.themoviedb.org&quot;, &quot;abc123&quot;)
+
+# Use it
+movies = tmdb_client(&quot;/movies&quot;, page=1, limit=10)
+</code></pre>
+<hr>
+<h2>Decorators (Essential for FastAPI)</h2>
+<blockquote>
+<p>Functions that modify other functions (you&#39;ll use these constantly in FastAPI)</p>
+</blockquote>
+<h3>Basic Decorator</h3>
+<pre><code class="language-python">def log_calls(func):
+    &quot;&quot;&quot;Decorator that logs function calls.&quot;&quot;&quot;
+    def wrapper(*args, **kwargs):
+        print(f&quot;Calling {func.__name__}&quot;)
+        result = func(*args, **kwargs)
+        print(f&quot;{func.__name__} returned {result}&quot;)
+        return result
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+
+add(3, 5)
+# Calling add
+# add returned 8
+</code></pre>
+<p><strong>What <code>@log_calls</code> does:</strong></p>
+<pre><code class="language-python"># This decorator syntax:
+@log_calls
+def add(a, b):
+    return a + b
+
+# Is equivalent to:
+def add(a, b):
+    return a + b
+add = log_calls(add)  # wrap function
+</code></pre>
+<h3>FastAPI Uses Decorators Heavily</h3>
+<pre><code class="language-python">from fastapi import FastAPI
+
+app = FastAPI()
+
+# @app.get is a decorator!
+@app.get(&quot;/&quot;)
+def home():
+    return {&quot;message&quot;: &quot;Hello&quot;}
+
+@app.post(&quot;/users&quot;)
+def create_user(user: dict):
+    return user
+</code></pre>
+<h3>Practical Decorator: Timing</h3>
+<pre><code class="language-python">import time
+
+def timer(func):
+    &quot;&quot;&quot;Measure function execution time.&quot;&quot;&quot;
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f&quot;{func.__name__} took {end - start:.2f}s&quot;)
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(2)
+    return &quot;done&quot;
+
+slow_function()
+# slow_function took 2.00s
+</code></pre>
+<h3>Decorator with Parameters</h3>
+<pre><code class="language-python">def retry(max_attempts: int):
+    &quot;&quot;&quot;Decorator that retries function on failure.&quot;&quot;&quot;
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt == max_attempts - 1:
+                        raise
+                    print(f&quot;Attempt {attempt + 1} failed, retrying...&quot;)
+        return wrapper
+    return decorator
+
+@retry(max_attempts=3)
+def unstable_api_call():
+    # might fail occasionally
+    pass
+</code></pre>
+<p><strong>You&#39;ll use decorators for:</strong></p>
+<ul>
+<li>✅ FastAPI routes (<code>@app.get</code>, <code>@app.post</code>)</li>
+<li>✅ Authentication/authorization</li>
+<li>✅ Caching</li>
+<li>✅ Rate limiting</li>
+<li>✅ Logging/monitoring</li>
+</ul>
+<hr>
+<h2>Best Practices</h2>
+<h3>1. Use Type Hints (Modern Python)</h3>
+<pre><code class="language-python"># ❌ No types
+def process_data(data, config):
+    pass
+
+# ✅ With types
+def process_data(data: List[Dict], config: Dict[str, any]) -&gt; List[Dict]:
+    pass
+</code></pre>
+<h3>2. Keep Functions Small &amp; Focused</h3>
+<pre><code class="language-python"># ❌ Does too much
+def process_and_save_user(data):
+    cleaned = clean_data(data)
+    validated = validate_data(cleaned)
+    user = create_user(validated)
+    save_to_db(user)
+    send_email(user)
+    log_event(user)
+    return user
+
+# ✅ Single responsibility
+def create_user_from_data(data: dict) -&gt; User:
+    cleaned = clean_data(data)
+    validated = validate_data(cleaned)
+    return create_user(validated)
+</code></pre>
+<h3>3. Pure Functions When Possible</h3>
+<pre><code class="language-python"># ❌ Side effects (modifies global state)
+total = 0
+def add_to_total(value):
+    global total
+    total += value
+
+# ✅ Pure function (no side effects)
+def add_to_total(current_total: int, value: int) -&gt; int:
+    return current_total + value
+
+total = add_to_total(total, 10)  # explicit
+</code></pre>
+<h3>4. Descriptive Names</h3>
+<pre><code class="language-python"># ❌ Unclear
+def process(d):
+    return d * 1.22
+
+# ✅ Clear
+def calculate_price_with_tax(price: float) -&gt; float:
+    TAX_RATE = 0.22
+    return price * (1 + TAX_RATE)
+</code></pre>
+<h3>5. Avoid Mutable Defaults</h3>
+<pre><code class="language-python"># ❌ BAD
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+
+# ✅ GOOD
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+</code></pre>
+<hr>
+<h2>Common Patterns</h2>
+<h3>1. Data Validation</h3>
+<pre><code class="language-python">def validate_user(user: dict) -&gt; bool:
+    &quot;&quot;&quot;Validate user data before saving.&quot;&quot;&quot;
+    required = [&quot;name&quot;, &quot;email&quot;, &quot;age&quot;]
+    
+    # Check required fields
+    if not all(field in user for field in required):
+        return False
+    
+    # Check types
+    if not isinstance(user[&quot;age&quot;], int) or user[&quot;age&quot;] &lt; 0:
+        return False
+    
+    # Check email format
+    if &quot;@&quot; not in user[&quot;email&quot;]:
+        return False
+    
+    return True
+</code></pre>
+<h3>2. Data Transformation Pipeline</h3>
+<pre><code class="language-python">def transform_user_data(raw_data: List[dict]) -&gt; List[dict]:
+    &quot;&quot;&quot;Clean and transform user data.&quot;&quot;&quot;
+    cleaned = [clean_user(u) for u in raw_data]
+    validated = [u for u in cleaned if validate_user(u)]
+    enriched = [enrich_user(u) for u in validated]
+    return enriched
+</code></pre>
+<h3>3. Error Handling</h3>
+<pre><code class="language-python">from typing import Optional
+
+def safe_divide(a: float, b: float) -&gt; Optional[float]:
+    &quot;&quot;&quot;Divide with error handling.&quot;&quot;&quot;
+    if b == 0:
+        return None
+    return a / b
+
+# Or raise specific exception
+def divide(a: float, b: float) -&gt; float:
+    &quot;&quot;&quot;Divide or raise ValueError.&quot;&quot;&quot;
+    if b == 0:
+        raise ValueError(&quot;Cannot divide by zero&quot;)
+    return a / b
+</code></pre>
+<h3>4. Configuration Functions</h3>
+<pre><code class="language-python">def get_database_config(env: str = &quot;development&quot;) -&gt; dict:
+    &quot;&quot;&quot;Get database config for environment.&quot;&quot;&quot;
+    configs = {
+        &quot;development&quot;: {
+            &quot;host&quot;: &quot;localhost&quot;,
+            &quot;port&quot;: 5432,
+            &quot;database&quot;: &quot;dev_db&quot;
+        },
+        &quot;production&quot;: {
+            &quot;host&quot;: &quot;prod-server.com&quot;,
+            &quot;port&quot;: 5432,
+            &quot;database&quot;: &quot;prod_db&quot;
+        }
+    }
+    return configs.get(env, configs[&quot;development&quot;])
+</code></pre>
+<hr>
+<h2>JavaScript Comparison Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Definition</strong></td>
+<td><code>def func():</code></td>
+<td><code>function func() {}</code></td>
+</tr>
+<tr>
+<td><strong>Arrow function</strong></td>
+<td><code>lambda x: x * 2</code></td>
+<td><code>x =&gt; x * 2</code></td>
+</tr>
+<tr>
+<td><strong>Default params</strong></td>
+<td><code>def func(x=10):</code></td>
+<td><code>function func(x = 10) {}</code></td>
+</tr>
+<tr>
+<td><strong>Rest params</strong></td>
+<td><code>def func(*args):</code></td>
+<td><code>function func(...args) {}</code></td>
+</tr>
+<tr>
+<td><strong>Spread object</strong></td>
+<td><code>def func(**kwargs):</code></td>
+<td><code>function func(obj) {}</code> (no direct equivalent)</td>
+</tr>
+<tr>
+<td><strong>Type hints</strong></td>
+<td><code>def func(x: int) -&gt; str:</code></td>
+<td>TypeScript: <code>function func(x: number): string</code></td>
+</tr>
+<tr>
+<td><strong>Decorators</strong></td>
+<td><code>@decorator</code></td>
+<td>No native syntax (use HOF)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Key Takeaways</h2>
+<p>✅ <strong>Use type hints</strong> - Essential for FastAPI, better IDE support<br>✅ **Master *args/<strong>kwargs</strong> - You&#39;ll see them everywhere<br>✅ <strong>Understand decorators</strong> - FastAPI is built on them<br>✅ <strong>Keep functions pure</strong> - Easier to test and debug<br>✅ <strong>Avoid mutable defaults</strong> - Common source of bugs<br>✅ <strong>Use lambdas sparingly</strong> - Only for simple operations  </p>
+<p><strong>Next:</strong> Practice these concepts in exercises to solidify understanding! 🚀</p>
+</body>
+</html>
