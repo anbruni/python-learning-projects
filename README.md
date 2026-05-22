@@ -76,6 +76,32 @@ This repository follows an [8-week structured roadmap](./ROADMAP.md) covering:
 - File I/O, JSON, APIs, error handling
 - [20+ practice exercises](./exercises/)
 
+### 📝 Exercise Progress
+
+#### Week 1: Core Python Fundamentals
+- ✅ **Exercise 1.1** - Type conversions & None
+- ✅ **Exercise 1.2** - Control flow challenges
+- ✅ **Exercise 1.3** - Lists deep dive
+- ✅ **Exercise 1.4** - Tuples & unpacking
+- ✅ **Exercise 1.5** - Dictionaries mastery
+- ✅ **Exercise 1.6** - Sets operations
+- ✅ **Exercise 1.7** - Mutability gotchas
+- ✅ **Exercise 1.8** - Shallow vs deep copy
+- ✅ **Exercise 1.9** - Functions basics
+- ✅ **Exercise 1.10** - Default parameters
+- ✅ **Exercise 1.11** - *args and **kwargs
+- ✅ **Exercise 1.12** - List, dict & set comprehensions
+- ⬜ **Exercise 1.13** - Pure vs impure functions
+- ⬜ **Exercise 1.16** - Iteration tools (enumerate, zip, map, filter)
+
+#### Week 2: Strings, Error Handling & Advanced Topics
+- ⬜ **Exercise 1.17** - String manipulation
+- ⬜ **Exercise 1.18** - Error handling
+- ⬜ **Exercise 1.19** - Generators basics
+- ⬜ **Exercise 1.20** - defaultdict & Counter
+- ⬜ **Exercise 1.21** - Import & modules
+- ⬜ **Exercise 1.22** - Virtual environment
+
 **Week 4: Project 1** 🔄
 - HTTP requests and API integration
 - CLI development
