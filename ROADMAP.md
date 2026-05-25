@@ -27,7 +27,13 @@
 **Week 1-4:** Fondamentali Python (exercises only)
 **Week 5:** 🎬 PROJECT 1 - Movie Data Collector
 **Week 6:** 🎬 PROJECT 2 - Movie Analytics Dashboard  
-**Week 7-8:** 🎬 PROJECT 3 - Movie Recommendation API (MVP)
+**Week 7-8:** 🎬 PROJECT 3 - Cinema Mood Recommender **(Full-Stack React + FastAPI + AI)**
+
+**📌 AGGIORNAMENTO ROADMAP (May 2026):**
+- **Esercizio 1.12** ora combina comprehensions (list, dict, set) - esercizi 1.14/1.15 rimossi
+- **Project 3** evoluto da backend-only a **full-stack application** (React + FastAPI + Groq LLM gratuito)
+- Integrazione nel sito personale per massimo impatto portfolio
+- Vedi [PROJECT-INTEGRATION-PLAN.md](./PROJECT-INTEGRATION-PLAN.md) per dettagli
 
 ---
 
@@ -143,31 +149,25 @@
 - Practical use cases
 - Combining positional, keyword, *args, **kwargs
 
-### Esercizio 1.12 - Lambda functions
-- Syntax: `lambda x: x * 2`
-- When to use (map, filter, sort key)
-- When NOT to use (complex logic)
+### Esercizio 1.12 - List, Dict & Set Comprehensions ⚡ MERGED
+- **List comprehensions**: `[x*2 for x in range(10)]`, with filter, nested
+- **Dict comprehensions**: `{k: v for k, v in pairs}`, invert dict, lookup tables
+- **Set comprehensions**: `{x for x in data}`, unique values
+- Transform datasets efficiently
+- When to use comprehensions vs loops
+
+**Note:** Questo esercizio unisce i precedenti 1.14 (list) + 1.15 (dict/set) per evitare ripetizioni e ottimizzare il tempo.
 
 ### Esercizio 1.13 - Pure vs impure functions
 - Pure: no side effects, deterministic
 - Impure: modifies state, I/O
 - Why it matters (testing, debugging)
 
-**Deliverable:** 5 esercizi funzioni, capire scope e side effects
+**Deliverable:** 4 esercizi funzioni, capire scope, side effects, e comprehensions
 
 ---
 
-## DAY 12-14: Comprehensions & Iteration Tools
-
-### Esercizio 1.14 - List comprehensions
-- Basic: `[x*2 for x in range(10)]`
-- With filter: `[x for x in range(10) if x % 2 == 0]`
-- Nested: `[x+y for x in range(3) for y in range(3)]`
-
-### Esercizio 1.15 - Dict & set comprehensions
-- Dict: `{k: v for k, v in pairs}`
-- Set: `{x for x in data}`
-- Transform datasets
+## DAY 12-14: Iteration Tools
 
 ### Esercizio 1.16 - Iteration tools
 - `enumerate()`: index + value
@@ -176,7 +176,7 @@
 - `filter()`: select
 - When to use comprehension vs map/filter
 
-**Concetti coperti:** comprehensions (list, dict, set), enumerate, zip, map, filter
+**Concetti coperti:** enumerate, zip, map, filter, functional programming basics
 
 ---
 
@@ -967,38 +967,45 @@ def test_read_root():
 
 ---
 
-# 🎬 WEEK 7-8: PROJECT 3 — MOVIE RECOMMENDATION API (MVP)
+# 🎬 WEEK 7-8: PROJECT 3 — CINEMA MOOD RECOMMENDER (FULL-STACK)
 
 **Deadline:** Fine Week 8
 
+**📌 AGGIORNAMENTO:** Questo progetto è stato evoluto in una **full-stack application** (React + FastAPI) che verrà integrata nel sito personale. Vedi [PROJECT-INTEGRATION-PLAN.md](./PROJECT-INTEGRATION-PLAN.md) per dettagli completi.
+
 ## What to Build
 
-FastAPI che raccomanda film usando TMDB + LLM.
+**AI-powered movie recommender** integrato nel tuo sito personale React, con FastAPI backend + LLM recommendations (Groq - GRATIS).
 
-### Core Endpoints (MVP)
+### Core Features
 
-**1. GET /movies**
-- List movies from DB
-- Query params: `genre`, `year_min`, `year_max`, `sort_by`, `limit`
-- Returns: list of movies
+**Frontend (React - integrato nel tuo sito personale):**
+- Sezione "Interests" > Cinema Mood Recommender
+- Form input: genre, mood, liked movie (optional), year range
+- Display 5 recommended movies con poster, rating, AI explanation
+- Responsive design, animazioni smooth
+- Link a TMDB per ogni film
 
-**2. GET /movies/{id}**
-- Movie details
-- Returns: movie + cast (if available)
+**Backend (FastAPI):**
 
-**3. POST /recommend**
+**1. POST /api/recommend** (main endpoint)
 Request:
 ```json
 {
+  "genre": "Sci-Fi",
+  "mood": "mind-bending, philosophical",
   "liked_movie": "Inception",
-  "mood": "mind-bending"
+  "year_min": 2010,
+  "year_max": 2024
 }
 ```
+
 Logic:
-1. Search movie in TMDB
-2. Get similar movies (TMDB API has `/similar` endpoint)
-3. Call LLM: "Why does user like Inception? Rank these similar movies."
-4. Return top 5 with explanations
+1. Fetch 20-30 candidate movies from TMDB (by genre, year range)
+2. Call **Groq LLM** (FREE) con user preferences + candidates
+3. LLM selects top 5 + provides personalized explanations
+4. Enrich with TMDB data (poster, rating, cast)
+5. Return recommendations
 
 Response:
 ```json
@@ -1007,29 +1014,41 @@ Response:
     {
       "title": "Interstellar",
       "year": 2014,
-      "reason": "Similar director (Nolan), complex narrative, sci-fi themes",
-      "rating": 8.6
+      "rating": 8.6,
+      "poster_url": "https://image.tmdb.org/...",
+      "reason": "Similar to Inception - Nolan's masterpiece exploring time dilation...",
+      "genres": ["Sci-Fi", "Drama"]
     }
-  ]
+  ],
+  "query_summary": "Based on your love for Inception and mind-bending mood..."
 }
 ```
 
-**4. GET /history**
-- List past recommendations (from DB)
+**2. GET /api/health** (healthcheck)
+- Status check per monitoring
 
-### Tech Stack (MVP)
+### Tech Stack
+
+**Frontend:**
+- React + TypeScript
+- Axios for API calls
+- TailwindCSS / styled-components
+- Integrato nel tuo sito personale esistente
 
 **Backend:**
-- FastAPI (sync, no async for simplicity)
-- SQLite (not PostgreSQL)
-- SQLAlchemy ORM
-- Pydantic models
-
-**External APIs:**
+- FastAPI (Python 3.12)
+- Pydantic models (validation)
 - TMDB API (movie data)
-- OpenAI/Anthropic API (LLM recommendations)
+- **Groq API** (LLM - **100% GRATUITO**, Llama 3.1 70B)
+- SQLite per caching (optional MVP)
+- Logging
 
-**No Docker, no Redis, no JWT auth** (hardcoded API key ok for MVP)
+**Deploy:**
+- Backend: Render free tier
+- Frontend: Già deployato col tuo sito
+- **Total cost: $0/mese** 🎉
+
+**No Docker, no Redis, no JWT auth, no PostgreSQL** (focus su MVP)
 
 ### Database Schema
 
@@ -1054,47 +1073,119 @@ class Recommendation(Base):
 
 ### File Structure
 ```
-movie-recommendation-api/
-├── .env.example
-├── .gitignore
-├── requirements.txt
-├── README.md
-├── main.py (FastAPI app)
-├── models.py (SQLAlchemy models)
-├── schemas.py (Pydantic models)
-├── database.py (DB connection)
-├── tmdb_client.py (TMDB API wrapper)
-├── llm_client.py (LLM API wrapper)
-├── tests/
-│   ├── test_api.py
-│   └── test_recommendations.py
-└── movies.db (SQLite, gitignored)
+cinema-mood-recommender/
+│
+├── 📁 backend/                    # FastAPI Python
+│   ├── main.py                    # FastAPI app
+│   ├── routers/
+│   │   └── recommendations.py     # POST /api/recommend
+│   ├── services/
+│   │   ├── tmdb_service.py        # TMDB API client
+│   │   └── groq_service.py        # Groq LLM client (FREE)
+│   ├── schemas.py                 # Pydantic models
+│   ├── requirements.txt
+│   ├── .env.example
+│   ├── tests/
+│   │   └── test_api.py
+│   └── README.md
+│
+└── 📁 frontend/                   # React (tuo sito)
+    └── src/
+        ├── pages/
+        │   └── Interests.tsx      # Sezione cinema
+        └── components/
+            └── MovieRecommender/
+                ├── MovieRecommender.tsx
+                ├── MovieCard.tsx
+                └── RecommendationForm.tsx
 ```
 
 ### Deliverables
 
-✅ Working API (4 endpoints)
-✅ Database with movies
-✅ LLM integration (recommendations)
-✅ 5-6 pytest tests (critical paths)
-✅ Swagger docs (auto-generated)
-✅ README with:
-  - Setup instructions
-  - API examples (curl)
-  - Architecture explanation
+**Backend:**
+✅ Working FastAPI app con endpoint `/api/recommend`
+✅ TMDB API integration (fetch candidate movies)
+✅ **Groq LLM integration** (AI recommendations - FREE)
+✅ Pydantic validation schemas
+✅ Error handling & logging
+✅ Tests con pytest (core flow)
+✅ Swagger docs auto-generated
+✅ Deploy su Render (free tier)
+✅ README con setup instructions
+
+**Frontend:**
+✅ React component integrato nel sito personale
+✅ Form per input (genre, mood, liked movie, year range)
+✅ Display recommendations con poster + AI explanations
+✅ Responsive design + animazioni
+✅ Error handling & loading states
+
+**Documentation:**
+✅ README per backend + frontend
+✅ Screenshot/GIF della feature live
+✅ Architecture diagram
 ✅ Push to GitHub
-✅ **BONUS:** Deploy to Render/Railway (free tier)
-✅ **BONUS:** Dockerize (vedi sezione sotto ⬇️)
+✅ **BONUS:** Blog post "How I built an AI movie recommender"
 
 ### Skills Applied
-- FastAPI (routing, Pydantic, error handling)
-- Database (SQLAlchemy ORM, CRUD)
-- API integration (TMDB + LLM)
-- Environment variables
-- Testing (pytest)
-- Type hints
+
+**Full-Stack:**
+- React + TypeScript (frontend)
+- FastAPI + Python (backend)
+- REST API design
+- CORS configuration
+
+**AI & APIs:**
+- **LLM integration (Groq - FREE)** ⭐
+- Prompt engineering
+- TMDB API integration
+- JSON parsing & validation
+
+**Backend:**
+- FastAPI routing
+- Pydantic schemas
+- Error handling
 - Logging
+- Testing (pytest)
+- Environment variables
+
+**Frontend:**
+- React hooks & state
+- API consumption (axios)
+- Responsive UI
+- Loading & error states
+- UX design
+
+**DevOps:**
+- Deploy backend (Render)
+- Environment configuration
+- CORS setup
+
+**Soft Skills:**
+- Full-stack thinking
+- Product sense
 - Documentation
+- **Portfolio storytelling** ⭐
+
+---
+
+## 🎯 Why This Project is POWERFUL for Interviews
+
+**Traditional Project 3**: Backend API only → 7/10
+**This Full-Stack Version**: React + FastAPI + AI → **10/10** ⭐
+
+**What makes it stand out:**
+1. **Live demo sul tuo sito** → recruiter lo vede subito
+2. **Full-stack** → mostra versatilità
+3. **AI integration** → trending skill (Applied AI Engineer)
+4. **$0 costi** → mostra resourcefulness
+5. **Personal touch** → "Amo il cinema, ho costruito questo..."
+6. **Production-ready** → deploy vero, non solo localhost
+
+**In colloquio puoi dire:**
+> "Ho costruito un AI movie recommender full-stack integrato nel mio sito personale. Backend FastAPI con Groq LLM (gratis), frontend React, TMDB API per 500k+ film. Live su [tuo-dominio.com/interests]. Response time <2s, testato da 20+ amici."
+
+Vedi [PROJECT-INTEGRATION-PLAN.md](./PROJECT-INTEGRATION-PLAN.md) per roadmap dettagliata fase per fase.
 
 ---
 
