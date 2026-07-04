@@ -447,6 +447,64 @@ users = [
 top_users = sorted(users, key=lambda u: u["score"], reverse=True)
 ```
 
+**enumerate() - Get index + value:**
+```python
+movies = ["Inception", "Interstellar", "Dunkirk"]
+
+# Without enumerate (verbose)
+for i in range(len(movies)):
+    print(f"{i}: {movies[i]}")
+
+# With enumerate (Pythonic)
+for index, movie in enumerate(movies):
+    print(f"{index}: {movie}")
+# 0: Inception
+# 1: Interstellar
+# 2: Dunkirk
+
+# Start from 1 instead of 0
+for rank, movie in enumerate(movies, start=1):
+    print(f"#{rank}: {movie}")
+# #1: Inception
+# #2: Interstellar
+# #3: Dunkirk
+```
+
+**zip() - Iterate multiple lists in parallel:**
+```python
+titles = ["Inception", "Interstellar"]
+years = [2010, 2014]
+ratings = [8.8, 8.6]
+
+# Without zip (verbose)
+for i in range(len(titles)):
+    print(f"{titles[i]} ({years[i]}): {ratings[i]}")
+
+# With zip (Pythonic)
+for title, year, rating in zip(titles, years, ratings):
+    print(f"{title} ({year}): {rating}")
+# Inception (2010): 8.8
+# Interstellar (2014): 8.6
+
+# Create list of dicts
+movies = [
+    {"title": t, "year": y, "rating": r}
+    for t, y, r in zip(titles, years, ratings)
+]
+```
+
+**⚠️ Important:** `zip()` stops at the shortest iterable:
+```python
+names = ["A", "B", "C"]
+ages = [25, 30]  # Shorter!
+
+for name, age in zip(names, ages):
+    print(f"{name}: {age}")
+# A: 25
+# B: 30
+# C is skipped!
+```
+
 ### Functions Returning Functions (Factory Pattern)
 
 ```python

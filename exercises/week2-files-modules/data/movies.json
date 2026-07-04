@@ -1,0 +1,122 @@
+[
+  {
+    "title": "The Godfather",
+    "year": 1972,
+    "director": "Francis Ford Coppola",
+    "rating": 9.2,
+    "genre": "Crime",
+    "cast": ["Marlon Brando", "Al Pacino", "James Caan"],
+    "awards": {"oscars": 3, "nominations": 11},
+    "streaming": ["Paramount+"]
+  },
+  {
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "director": "Frank Darabont",
+    "rating": 9.3,
+    "genre": "Drama",
+    "cast": ["Tim Robbins", "Morgan Freeman"],
+    "awards": {"oscars": 0, "nominations": 7},
+    "streaming": ["Netflix", "Amazon Prime"]
+  },
+  {
+    "title": "The Dark Knight",
+    "year": 2008,
+    "director": "Christopher Nolan",
+    "rating": 9.0,
+    "genre": "Action",
+    "cast": ["Christian Bale", "Heath Ledger", "Aaron Eckhart"],
+    "awards": {"oscars": 2, "nominations": 8},
+    "streaming": ["HBO Max"]
+  },
+  {
+    "title": "Inception",
+    "year": 2010,
+    "director": "Christopher Nolan",
+    "rating": 8.8,
+    "genre": "Sci-Fi",
+    "cast": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page"],
+    "awards": {"oscars": 4, "nominations": 8},
+    "streaming": ["Netflix", "Amazon Prime"]
+  },
+  {
+    "title": "Pulp Fiction",
+    "year": 1994,
+    "director": "Quentin Tarantino",
+    "rating": 8.9,
+    "genre": "Crime",
+    "cast": ["John Travolta", "Uma Thurman", "Samuel L. Jackson"],
+    "awards": {"oscars": 1, "nominations": 7},
+    "streaming": ["Paramount+"]
+  },
+  {
+    "title": "Schindler's List",
+    "year": 1993,
+    "director": "Steven Spielberg",
+    "rating": 9.0,
+    "genre": "Drama",
+    "cast": ["Liam Neeson", "Ralph Fiennes", "Ben Kingsley"],
+    "awards": {"oscars": 7, "nominations": 12},
+    "streaming": ["Peacock"]
+  },
+  {
+    "title": "The Good, the Bad and the Ugly",
+    "year": 1966,
+    "director": "Sergio Leone",
+    "rating": 8.8,
+    "genre": "Western",
+    "cast": ["Clint Eastwood", "Eli Wallach", "Lee Van Cleef"],
+    "awards": {"oscars": 0, "nominations": 0},
+    "streaming": ["Amazon Prime"]
+  },
+  {
+    "title": "Fight Club",
+    "year": 1999,
+    "director": "David Fincher",
+    "rating": 8.8,
+    "genre": "Drama",
+    "cast": ["Brad Pitt", "Edward Norton", "Helena Bonham Carter"],
+    "awards": {"oscars": 0, "nominations": 1},
+    "streaming": ["Netflix"]
+  },
+  {
+    "title": "The Matrix",
+    "year": 1999,
+    "director": "Lana Wachowski",
+    "rating": 8.7,
+    "genre": "Sci-Fi",
+    "cast": ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"],
+    "awards": {"oscars": 4, "nominations": 4},
+    "streaming": ["HBO Max"]
+  },
+  {
+    "title": "Interstellar",
+    "year": 2014,
+    "director": "Christopher Nolan",
+    "rating": 8.7,
+    "genre": "Sci-Fi",
+    "cast": ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"],
+    "awards": {"oscars": 1, "nominations": 5},
+    "streaming": ["Paramount+", "Amazon Prime"]
+  },
+  {
+    "title": "Goodfellas",
+    "year": 1990,
+    "director": "Martin Scorsese",
+    "rating": 8.7,
+    "genre": "Crime",
+    "cast": ["Ray Liotta", "Robert De Niro", "Joe Pesci"],
+    "awards": {"oscars": 1, "nominations": 6},
+    "streaming": ["Netflix", "HBO Max"]
+  },
+  {
+    "title": "2001: A Space Odyssey",
+    "year": 1968,
+    "director": "Stanley Kubrick",
+    "rating": 8.3,
+    "genre": "Sci-Fi",
+    "cast": ["Keir Dullea", "Gary Lockwood"],
+    "awards": {"oscars": 1, "nominations": 4},
+    "streaming": ["Amazon Prime", "HBO Max"]
+  }
+]
