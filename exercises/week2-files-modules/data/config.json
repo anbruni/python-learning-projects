@@ -1,0 +1,12 @@
+{
+  "api_key": "tmdb_abc123xyz",
+  "base_url": "https://api.themoviedb.org/3",
+  "language": "it-IT",
+  "max_results": 10,
+  "include_adult": false,
+  "genres": ["Drama", "Crime", "Sci-Fi"],
+  "cache": {
+    "enabled": true,
+    "ttl_seconds": 1800
+  }
+}
