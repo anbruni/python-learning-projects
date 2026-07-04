@@ -280,57 +280,6 @@ def unique_lengths(words: List[str]) -> Set[int]:
 
 
 # =============================================================================
-# BONUS - COMBINED PATTERNS
-# =============================================================================
-"""
-Real-world patterns combining comprehensions
-"""
-
-
-def group_movies_by_year(movies: List[dict]) -> Dict[int, List[str]]:
-    """
-    Group movie titles by year using dict comprehension.
-
-    Args:
-        movies: List of movie dicts
-
-    Returns:
-        Dict[int, List[str]]: {year: [titles]}
-
-    Example:
-        >>> movies = [
-        ...     {'title': 'Movie A', 'year': 2010},
-        ...     {'title': 'Movie B', 'year': 2010},
-        ...     {'title': 'Movie C', 'year': 2015}
-        ... ]
-        >>> group_movies_by_year(movies)
-        {2010: ['Movie A', 'Movie B'], 2015: ['Movie C']}
-    """
-    pass
-
-
-def transform_dataset(movies: List[dict]) -> List[Dict[str, any]]:
-    """
-    Transform movie data: extract fields + calculate new ones.
-
-    Args:
-        movies: List of movie dicts with title, rating, year
-
-    Returns:
-        List[dict]: Transformed with title, rating, decade, is_recent
-
-    Example:
-        >>> movies = [
-        ...     {'title': 'Old Movie', 'rating': 7.5, 'year': 1995},
-        ...     {'title': 'New Movie', 'rating': 8.5, 'year': 2020}
-        ... ]
-        >>> transform_dataset(movies)
-        [{'title': 'Old Movie', 'rating': 7.5, 'decade': 1990, 'is_recent': False}, {'title': 'New Movie', 'rating': 8.5, 'decade': 2020, 'is_recent': True}]
-    """
-    pass
-
-
-# =============================================================================
 # TESTS
 # =============================================================================
 
@@ -411,32 +360,6 @@ if __name__ == "__main__":
     lengths = sorted(unique_lengths(words))
     print(f"Words: {words}")
     print(f"Unique lengths: {lengths}")
-
-# print("\n" + "=" * 70)
-# print("BONUS - COMBINED PATTERNS")
-# print("=" * 70)
-
-# print("\n1. Group movies by year:")
-# movies_years = [
-#     {"title": "Movie A", "year": 2010},
-#     {"title": "Movie B", "year": 2010},
-#     {"title": "Movie C", "year": 2015},
-#     {"title": "Movie D", "year": 2015},
-# ]
-# grouped = group_movies_by_year(movies_years)
-# print("Grouped by year:")
-# for year, titles in sorted(grouped.items()):
-#     print(f"  {year}: {titles}")
-
-# print("\n2. Transform dataset:")
-# movies_transform = [
-#     {"title": "Old Movie", "rating": 7.5, "year": 1995},
-#     {"title": "New Movie", "rating": 8.5, "year": 2020},
-# ]
-# transformed = transform_dataset(movies_transform)
-# print("Transformed:")
-# for m in transformed:
-#     print(f"  {m}")
 
 # print("\n" + "=" * 70)
 # print("✅ Exercise 1.12 Complete!")
