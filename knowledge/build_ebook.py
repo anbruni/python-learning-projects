@@ -37,6 +37,10 @@ CHAPTERS = [
     ("sets", "Sets"),
     ("mutability", "Mutability"),
     ("oop", "Object-Oriented Programming"),
+    ("functions", "Functions"),
+    ("error-handling", "Error Handling"),
+    ("generators", "Generators & Iterators"),
+    ("imports-modules", "Imports & Modules"),
 ]
 
 
