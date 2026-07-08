@@ -2,7 +2,18 @@
   "permissions": {
     "allow": [
       "Bash(git checkout *)",
-      "Bash(python build_ebook.py)"
+      "Bash(python build_ebook.py)",
+      "Bash(python exercises/week2-files-modules/exercise-2.4.py)",
+      "Bash(python3 exercises/week2-files-modules/exercise-2.4.py)",
+      "Bash(python3 -c \"import requests; print\\(requests.__version__\\)\")",
+      "Bash(ls *.txt)",
+      "Bash(cat requirements.txt)",
+      "Bash(ls *.toml)",
+      "Bash(cat pyproject.toml)",
+      "Bash(.venv/bin/python exercises/week2-files-modules/exercise-2.7.py)",
+      "Bash(.venv/bin/python -c ' *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
